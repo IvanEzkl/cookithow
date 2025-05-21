@@ -77,6 +77,23 @@ header.visible {
   transition: background 0.5s;
 }
 
+.signup-btn {
+  display: flex;
+  color: #000000;
+  background: #FAA307;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 5rem;
+  transition: background 0.5s, color 0.5s;
+  cursor: pointer;
+}
+
+.signup-btn:hover {
+  background: #ff7e00;
+  color: #03071E;
+}
+
 #menu-icon {
   font-size: 24px;
   cursor: pointer;
@@ -84,21 +101,6 @@ header.visible {
   display: none;
 }
 
-.profile {
-  display: flex;
-  align-items: center;
-  column-gap: 0.5rem;
-  cursor: pointer;
-  color: var(--light-bg);
-}
-
-.profile img {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 50%;
-}
 
 /* General Section Styling */
 section {
@@ -164,7 +166,7 @@ h1 {
 }
 
 #search-button:hover {
-  background-color: var(--primary-dark);
+  background-color: #ff7e00;
 }
 
 .random-button {
