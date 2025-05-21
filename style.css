@@ -1,8 +1,8 @@
 :root {
   --light-bg: #f8f9fa;
-  --text-dark: #343a40;
-  --primary-color: #4caf50;
-  --primary-dark: #45a049;
+  --text-dark: #03071E;
+  --primary-color: #FAA307;
+  --primary-dark: #03071E;
 }
 
 * {
@@ -13,20 +13,112 @@
 
 body {
   font-family: "Poppins", sans-serif;
-  line-height: 1.7;
-  padding: 30px 15px;
+  line-height: 100%;
   background-color: var(--light-bg);
-  color: var(--text-dark);
+  color: #FAA307;
+}
+
+header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  text-shadow: #000000 2px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: transparent;
+  box-shadow: 0 8px 11px rgba(235, 232, 232, 0.15);
+  padding: 20px 100px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, top 0.3s ease;
+}
+
+header.visible {
+  background-color: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.6);
+}
+
+.logo {
+  display: flex;
+  align-items: left;
+  font-size: 1.1rem;
+  border-top: #db2d2d;
+  font-weight: 600;
+  color: var(--text-color);
+  column-gap: 0.5rem;
+  text-decoration: none;
+}
+
+.logo .bx {
+  font-size: 24px;
+  color: var(--orange-color);
+}
+
+.navbar {
+  list-style: none;
+  display: flex;
+  column-gap: 0.5rem;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: var(--text-color);
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+}
+
+.navbar a:hover,
+.navbar .home-active {
+  background: #ff7e00;
+  border-radius: 5rem;
+  color: #000000;
+  transition: background 0.5s;
+}
+
+#menu-icon {
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10001;
+  display: none;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  column-gap: 0.5rem;
+  cursor: pointer;
+  color: var(--light-bg);
+}
+
+.profile img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+}
+
+/* General Section Styling */
+section {
+  padding: 5rem 2rem 2rem;
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 .recipe-finder-container {
-  max-width: 1200px;
-  padding: 0 15px;
   text-align: center;
   margin-inline: auto;
+  height: 75vh;
+  background-image: url("./assets/cook.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 h1 {
+  padding-top: 150px;
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 30px;
