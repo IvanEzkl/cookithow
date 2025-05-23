@@ -1,6 +1,10 @@
 const SEARCH_API_URL = "https://www.themealdb.com/api/json/v1/1/search.php?s=";
 const RANDOM_API_URL = "https://www.themealdb.com/api/json/v1/1/random.php";
 const LOOKUP_API_URL = "https://www.themealdb.com/api/json/v1/1/lookup.php?i=";
+const CATEGORY_LIST_API = "https://www.themealdb.com/api/json/v1/1/list.php?c=list";
+const AREA_LIST_API = "https://www.themealdb.com/api/json/v1/1/list.php?a=list";
+const FILTER_BY_CATEGORY_API = "https://www.themealdb.com/api/json/v1/1/filter.php?c=";
+const FILTER_BY_AREA_API = "https://www.themealdb.com/api/json/v1/1/filter.php?a=";
 
 const searchForm = document.getElementById("search-form");
 const searchInput = document.getElementById("search-input");
@@ -10,6 +14,8 @@ const randomButton = document.getElementById("random-button");
 const modal = document.getElementById("recipe-modal");
 const modalContent = document.getElementById("recipe-details-content");
 const modalCloseBtn = document.getElementById("modal-close-btn");
+const categorySelect = document.getElementById("category-select");
+const areaSelect = document.getElementById("area-select");
 
 searchForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -100,6 +106,70 @@ async function getRandomRecipe() {
     );
   }
 }
+async function populateFilters() {
+  // Populate categories
+  const catRes = await fetch(CATEGORY_LIST_API);
+  const catData = await catRes.json();
+  catData.meals.forEach(cat => {
+    const opt = document.createElement("option");
+    opt.value = cat.strCategory;
+    opt.textContent = cat.strCategory;
+    categorySelect.appendChild(opt);
+  });
+
+  // Populate areas
+  const areaRes = await fetch(AREA_LIST_API);
+  const areaData = await areaRes.json();
+  areaData.meals.forEach(area => {
+    const opt = document.createElement("option");
+    opt.value = area.strArea;
+    opt.textContent = area.strArea;
+    areaSelect.appendChild(opt);
+  });
+}
+
+categorySelect.addEventListener("change", async function () {
+  const value = this.value;
+  areaSelect.value = ""; // Reset area filter if category is chosen
+  if (value) {
+    showMessage(`Filtering by category: ${value}`, false, true);
+    resultsGrid.innerHTML = "";
+    const res = await fetch(FILTER_BY_CATEGORY_API + encodeURIComponent(value));
+    const data = await res.json();
+    clearMessage();
+    if (data.meals) {
+      displayRecipes(data.meals);
+    } else {
+      showMessage("No recipes found for this category.");
+    }
+  } else {
+    resultsGrid.innerHTML = "";
+    showMessage("Please select a filter or search for a recipe.");
+  }
+});
+
+areaSelect.addEventListener("change", async function () {
+  const value = this.value;
+  categorySelect.value = ""; // Reset category filter if area is chosen
+  if (value) {
+    showMessage(`Filtering by area: ${value}`, false, true);
+    resultsGrid.innerHTML = "";
+    const res = await fetch(FILTER_BY_AREA_API + encodeURIComponent(value));
+    const data = await res.json();
+    clearMessage();
+    if (data.meals) {
+      displayRecipes(data.meals);
+    } else {
+      showMessage("No recipes found for this area.");
+    }
+  } else {
+    resultsGrid.innerHTML = "";
+    showMessage("Please select a filter or search for a recipe.");
+  }
+});
+
+// Call this on page load
+populateFilters();
 
 function showModal() {
   modal.classList.remove("hidden");
