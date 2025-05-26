@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login / Signup</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/login.css">
+</head>
+<body>
+<div class="gif-background">
+    <img src="/assets/Connor.gif" alt="Background Animation" />
+</div>
+<div class="form">
+    <div class="back">
+        <div>
+            <h2>Don't have an account?</h2>
+            <p>Join us and to save all your collections</p>
+            <button id="show-signup-form">
+                Sign up
+            </button>
+        </div>
+        <div>
+            <h2>Have an account?</h2>
+            <p>Sign in to see all your collections</p>
+            <button id="show-signin-form">
+                Sign in
+            </button>
+        </div>
+    </div>
+    <div class="front">
+        <div class="signin">
+            <div class="title">
+                Welcome back!
+                <div class="subtitle">Log in to your account?</div>
+            </div>
+            <div class="form-element">
+                <i class="fa fa-envelope"></i>
+                <input type="text" placeholder="Email" id="email-input">
+            </div>
+            <div class="form-element password-field">
+                <i class="fa fa-key"></i>
+                <input type="password" placeholder="Password" id="password-input">
+                <i class="fa fa-eye password-toggle" id="password-toggle"></i>
+            </div>
+            <div class="form-element checkbox-element">
+                <input type="checkbox" id="remember-me">
+                <label for="remember-me">Remember me</label>
+            </div>
+            <div class="form-element">
+                <button id="login-btn">Log In</button>
+            </div>
+            <div class="form-element">
+                <a href="#" class="forgot-password">Forgot Password?</a>
+            </div>
+        </div>
+        <div class="signup">
+            <div class="title">
+                Sign Up
+            </div>
+            <div class="form-element">
+                <i class="fa fa-user"></i>
+                <input type="text" placeholder="Username" id="username">
+            </div>
+            <div class="form-element">
+                <i class="fa fa-user"></i>
+                <input type="text" placeholder="Full Name" id="fullName">
+            </div>
+            <div class="form-element">
+                <i class="fa fa-envelope"></i>
+                <input type="text" placeholder="Email" id="email">
+            </div>
+            <div class="form-element password-field">
+                <i class="fa fa-key"></i>
+                <input type="password" placeholder="Password" id="password">
+                <i class="fa fa-eye password-toggle" id="signup-password-toggle"></i>
+            </div>
+            <div class="form-element password-field">
+                <i class="fa fa-key"></i>
+                <input type="password" placeholder="Confirm Password" id="confirmPassword">
+                <i class="fa fa-eye password-toggle" id="signup-confirm-password-toggle"></i>
+            </div>
+            <div class="form-element checkbox-element">
+                <input type="checkbox" id="terms-checkbox">
+                <label for="terms-checkbox">I agree to the terms and conditions</label>
+            </div>
+            <div class="form-element">
+                <button id="signup-btn">Sign Up</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/controllers/login.js"></script>
+</body>
+</html>
