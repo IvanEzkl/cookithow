@@ -50,7 +50,6 @@ async function populateFilters() {
   });
 }
 
-<<<<<<< HEAD
 // Listen for changes on both filters and apply both at the same time
 categorySelect.addEventListener("change", applyFilters);
 areaSelect.addEventListener("change", applyFilters);
@@ -202,47 +201,6 @@ resultsGrid.addEventListener("click", function(e) {
     setTimeout(() => card.classList.remove("bounce"), 500);
   }
 }, true);
-=======
-categorySelect.addEventListener("change", async function () {
-  const value = this.value;
-  areaSelect.value = ""; // Reset area filter if category is chosen
-  if (value) {
-    showMessage(`Filtering by category: ${value}`, false, true);
-    resultsGrid.innerHTML = "";
-    const res = await fetch(FILTER_BY_CATEGORY_API + encodeURIComponent(value));
-    const data = await res.json();
-    clearMessage();
-    if (data.meals) {
-      displayRecipes(data.meals);
-    } else {
-      showMessage("No recipes found for this category.");
-    }
-  } else {
-    resultsGrid.innerHTML = "";
-    showMessage("Please select a filter or search for a recipe.");
-  }
-});
-
-areaSelect.addEventListener("change", async function () {
-  const value = this.value;
-  categorySelect.value = ""; // Reset category filter if area is chosen
-  if (value) {
-    showMessage(`Filtering by area: ${value}`, false, true);
-    resultsGrid.innerHTML = "";
-    const res = await fetch(FILTER_BY_AREA_API + encodeURIComponent(value));
-    const data = await res.json();
-    clearMessage();
-    if (data.meals) {
-      displayRecipes(data.meals);
-    } else {
-      showMessage("No recipes found for this area.");
-    }
-  } else {
-    resultsGrid.innerHTML = "";
-    showMessage("Please select a filter or search for a recipe.");
-  }
-});
->>>>>>> 7a4637a4b612b6a277f5f1347351a27d5d319fa3
 
 // Call this on page load
 populateFilters();
@@ -526,7 +484,6 @@ function showMemberDetailsModal(member) {
 }
 
 // Initialize on load
-<<<<<<< HEAD
 showTeamMember(currentMember);
 document.addEventListener('DOMContentLoaded', function() {
     const header = document.querySelector('header');
@@ -568,6 +525,13 @@ document.addEventListener('DOMContentLoaded', function() {
           }, 700);
         }, 100);
       }
-=======
-showTeamMember(currentMember);
->>>>>>> 7a4637a4b612b6a277f5f1347351a27d5d319fa3
+      function scrollToProjects() {
+        const projectsSection = document.getElementById('projects');
+        if (!projectsSection) return;
+        const rect = projectsSection.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        window.scrollTo({
+          top: rect.top + scrollTop - 60, // adjust offset for header if needed
+          behavior: 'smooth'
+        });
+      }

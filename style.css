@@ -22,18 +22,6 @@ section {
   min-height: unset; /* Remove forced height */
 }
 
-
-body {
-  font-family: "Poppins", sans-serif;
-  line-height: 100%;
-  background-image: url(/assets/cook.png);
-  background-repeat: no-repeat;
-  background-size: cover;         
-  background-position: center;    
-  background-attachment: fixed;   
-  color: #FAA307;
-}
-
 header {
   position: fixed;
   width: 100%;
@@ -87,15 +75,6 @@ h1 {
   font-weight: 700;
   margin-bottom: 30px;
   letter-spacing: -1px;
-  background-color: transparent;
-  box-shadow: 0 8px 11px rgba(235, 232, 232, 0.15);
-  padding: 20px 100px;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease, top 0.3s ease;
-}
-
-header.visible {
-  background-color: rgba(0, 0, 0, 0.8);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.6);
 }
 
 .logo {
@@ -128,7 +107,6 @@ header.visible {
   font-weight: 500;
   padding: 0.5rem 1rem;
   transition: step-end 0.7s ease, slow 0.5s;
-    
 }
 
 .Signup {
@@ -329,7 +307,7 @@ h1 {
   position: absolute;
   top: 15px;
   right: 15px;
-  background-color: var(--light-bg);
+  background-color: tra;
   border: 1px solid #e9ecef;
   border-radius: 50%;
   height: 35px;
@@ -486,7 +464,6 @@ h1 {
   border-color: #ffa500;
   color: #fdfcfc;
 }
-
 
 
 .team-spotlight-card {
