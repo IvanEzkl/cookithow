@@ -27,6 +27,7 @@ searchForm.addEventListener("submit", (e) => {
     showMessage("Please search a recipe!", true);
   }
 });
+
 async function populateFilters() {
   // Populate categories
   const catRes = await fetch(CATEGORY_LIST_API);
@@ -69,7 +70,6 @@ categorySelect.addEventListener("change", async function () {
   }
 });
 
-
 areaSelect.addEventListener("change", async function () {
   const value = this.value;
   categorySelect.value = ""; // Reset category filter if area is chosen
@@ -92,6 +92,7 @@ areaSelect.addEventListener("change", async function () {
 
 // Call this on page load
 populateFilters();
+
 async function searchRecipes(query) {
   showMessage(`Searching for "${query}"...`, false, true);
   resultsGrid.innerHTML = "";
@@ -102,7 +103,6 @@ async function searchRecipes(query) {
 
     const data = await response.json();
     clearMessage();
-    console.log("data: ", data);
 
     if (data.meals) {
       displayRecipes(data.meals);
@@ -131,6 +131,7 @@ function displayRecipes(recipes) {
     return;
   }
 
+  resultsGrid.innerHTML = "";
   recipes.forEach((recipe) => {
     const recipeDiv = document.createElement("div");
     recipeDiv.classList.add("recipe-item");
@@ -214,7 +215,6 @@ async function getRecipeDetails(id) {
     if (!response.ok) throw new Error("Failed to fetch recipe details.");
     const data = await response.json();
 
-    console.log("details: ", data);
     if (data.meals && data.meals.length > 0) {
       displayRecipeDetails(data.meals[0]);
     } else {
@@ -249,7 +249,6 @@ function displayRecipeDetails(recipe) {
     }
   }
 
-    
   const categoryHTML = recipe.strCategory
     ? `<h3>Category: ${recipe.strCategory}</h3>`
     : "";
@@ -280,3 +279,97 @@ function displayRecipeDetails(recipe) {
   ${sourceHTML}
   `;
 }
+
+// --- OUR TEAM SPOTLIGHT SECTION ---
+
+const teamMembers = [
+  {
+    name: "Regodon, Ivan Ezekiel G.",
+    role: "Frontend Developer",
+    photo: "/assets/pogi.jpg",
+    desc: "Welcome to my personal website. I love building beautiful and functional user interfaces!"
+  },
+  {
+    name: "Member 2",
+    role: "Backend Developer",
+    photo: "images/2.jpg",
+    desc: "I specialize in server-side logic and database management. Let's build something amazing together!"
+  },
+  {
+    name: "Member 3",
+    role: "UI/UX Designer",
+    photo: "images/3.jpg",
+    desc: "Design is not just what it looks like and feels like. Design is how it works."
+  }
+];
+
+let currentMember = 0;
+let typingTimeout;
+
+function showTeamMember(idx) {
+  const member = teamMembers[idx];
+  document.getElementById("team-photo").src = member.photo;
+  document.getElementById("team-photo").alt = member.name;
+  document.getElementById("team-name").textContent = member.name;
+  document.getElementById("team-role").textContent = member.role;
+  autoType(member.desc);
+
+  // Add Learn More button if not present
+  let learnMoreBtn = document.getElementById("learn-more-btn");
+  if (!learnMoreBtn) {
+    learnMoreBtn = document.createElement("button");
+    learnMoreBtn.id = "learn-more-btn";
+    learnMoreBtn.textContent = "Learn More";
+    learnMoreBtn.className = "learn-more-btn";
+    document.querySelector(".team-spotlight-info").appendChild(learnMoreBtn);
+    learnMoreBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      showMemberDetailsModal(member);
+    });
+  }
+}
+
+function autoType(text) {
+  const descElem = document.getElementById("team-desc");
+  descElem.textContent = "";
+  let i = 0;
+  clearTimeout(typingTimeout);
+
+  function typeChar() {
+    if (i <= text.length) {
+      descElem.textContent = text.slice(0, i);
+      i++;
+      typingTimeout = setTimeout(typeChar, 35);
+    }
+  }
+  typeChar();
+}
+
+const spotlightContainer = document.querySelector('.team-spotlight-container');
+const spotlightCard = document.querySelector('.team-spotlight-card');
+
+// Go to next member when mouse leaves the container
+spotlightContainer.addEventListener('mouseleave', function () {
+  currentMember = (currentMember + 1) % teamMembers.length;
+  showTeamMember(currentMember);
+});
+
+// Show full details when clicking inside the card or Learn More button
+spotlightCard.addEventListener('click', function () {
+  showMemberDetailsModal(teamMembers[currentMember]);
+});
+
+function showMemberDetailsModal(member) {
+  modalContent.innerHTML = `
+    <h2>${member.name}</h2>
+    <img src="${member.photo}" alt="${member.name}" style="width:180px;height:180px;border-radius:50%;margin-bottom:1rem;">
+    <h3>${member.role}</h3>
+    <p style="margin-top:1.5rem;font-size:1.1rem;">${member.desc}</p>
+    <button id="close-member-modal" class="learn-more-btn" style="margin-top:2rem;">Close</button>
+  `;
+  showModal();
+  document.getElementById("close-member-modal").onclick = closeModal;
+}
+
+// Initialize on load
+showTeamMember(currentMember);
