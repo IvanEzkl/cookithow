@@ -1,0 +1,629 @@
+:root {
+  --light-bg: #f8f9fa;
+  --text-dark: #03071E;
+  --primary-color: #FAA307;
+  --primary-dark: #03071E;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+section {
+  padding: 5rem 2rem 2rem;
+  max-width: 100%;
+  margin: 0 auto;
+  font-size: 2rem;
+  color: white;
+  opacity: 1; /* Make it visible */
+  transform: none;
+  display: block; 
+  min-height: unset; /* Remove forced height */
+}
+
+header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  text-shadow: #000000 2px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(0, 0, 0, 0.1); /* Start with slight transparency */
+  backdrop-filter: blur(10px); /* Add blur effect */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px 100px;
+  transition: all 0.3s ease;
+}
+
+/* When scrolled - more opaque background */
+header.scrolled {
+  background-color: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Ensure content doesn't hide behind fixed header */
+body {
+  font-family: "Poppins", sans-serif;
+  line-height: 100%;
+  background-image: url(/assets/cook.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #FAA307;
+  padding-top: 80px; /* Add padding to account for fixed header */
+}
+
+/* Adjust the recipe container padding */
+.recipe-finder-container {
+  text-align: center;
+  margin-inline: auto;
+  height: 75vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding-top: 70px; /* Add extra padding for better spacing */
+}
+
+/* Adjust h1 padding since we added body padding */
+h1 {
+  padding-top: 80px; /* Reduced since body now has padding */
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  letter-spacing: -1px;
+}
+
+.logo {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  display: flex;
+  align-items: flex-start;
+  font-size: 2.1rem;
+  font-weight: 600;
+  color: var(--text-color);
+  column-gap: 0.5rem;
+  text-decoration: none;
+  margin-left: -80px;
+}
+
+.logo .bx {
+  font-size: 24px;
+  color: var(--orange-color);
+}
+
+.navbar {
+  list-style: none;
+  display: flex;
+  column-gap: .5rem;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: var(--text-color);
+  font-size: 1.2rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  transition: step-end 0.7s ease, slow 0.5s;
+}
+
+.Signup {
+  margin-right: -50rem;
+  margin-left: -20px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  text-align: justify;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.navbar a:hover,
+.navbar .home-active {
+  background: #ff7e00;
+  border-radius: 5rem;
+  color: #000000;
+  transition: background 0.5s;
+
+}
+
+
+#menu-icon {
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10001;
+  display: none;
+}
+
+
+/* General Section Styling */
+section {
+  padding: 5rem 2rem 2rem;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.recipe-finder-container {
+  text-align: center;
+  margin-inline: auto;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding-bottom: 60px; 
+}
+
+h1 {
+  padding-top: 150px;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  letter-spacing: -1px;
+}
+
+.search-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 28px;
+  margin-inline: auto;
+  max-width: 600px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+}
+
+#search-input {
+  padding: 15px 20px;
+  font-size: 1rem;
+  flex-grow: 1;
+  border: 1px solid #e9ecef;
+  border-radius: 8px 0 0 8px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+#search-input:focus {
+  border-color: var(--primary-color);
+}
+
+#search-button {
+  padding: 13px 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: "Poppins", sans-serif;
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#search-button:hover {
+  background-color: #ff7e00;
+}
+
+.random-button {
+  padding: 10px 25px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: "Poppins", sans-serif;
+  background-color: #ff9800;
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.random-button:hover {
+  background-color: #f57c00;
+  transform: translateY(-2px);
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 15px;
+  margin-top: 30px;
+  margin-bottom: 60px; 
+}
+
+.recipe-item img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 20px;
+
+}
+
+.recipe-item {
+  background-color: #181717;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.25s ease-in-out;
+}
+
+.recipe-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.recipe-item h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  padding: 15px;
+  margin: 0;
+}
+
+.modal-container {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 1;
+  visibility: visible;
+  backdrop-filter: blur(3px);
+  padding: 20px;
+  transition: opacity 0.3s ease, visibility 0s ease 0s;
+}
+
+.modal-container.hidden {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s ease 0.3s,
+    backdrop-filter 0.3s ease;
+  backdrop-filter: blur(0px);
+}
+
+.modal-content {
+  background-color: #0f0f0f;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 35px 40px;
+  position: relative;
+  transform: scale(1);
+  transition: transform 0.3s ease;
+}
+
+.modal-container.hidden .modal-content {
+  transform: scale(0.95);
+}
+
+.modal-content .modal-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: tra;
+  border: 1px solid #e9ecef;
+  border-radius: 50%;
+  height: 35px;
+  width: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #6c757d;
+  transform: rotate(45deg);
+  transition: all 0.2s ease;
+}
+
+.modal-content .modal-close-btn:hover {
+  transform: rotate(135deg);
+  color: var(--text-dark);
+  background-color: #e2e6ea;
+}
+
+#recipe-details-content h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--primary-color);
+}
+
+#recipe-details-content img {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#recipe-details-content h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-top: 25px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 8px;
+}
+
+#recipe-details-content ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 25px;
+}
+
+#recipe-details-content ul li {
+  padding: 8px 0;
+  border-bottom: 1px dashed #e9ecef;
+  font-size: 0.95rem;
+}
+
+#recipe-details-content ul li:last-child {
+  border-bottom: none;
+}
+
+#recipe-details-content p {
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+#recipe-details-content a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+#recipe-details-content a:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
+#recipe-details-content .video-wrapper {
+  margin-top: 15px;
+  margin-bottom: 8px;
+}
+
+.message {
+  margin: 25px auto;
+  padding: 10px;
+  max-width: 600px;
+  font-size: 1rem;
+  border-radius: 8px;
+}
+
+.message.error {
+  color: #ff7e00;
+  background-color: transparent;
+}
+
+.message.info,
+.message.loading {
+  color: #ff7e00;
+}
+
+.our-team-title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: #FAA307;
+}
+
+.filter-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;      /* Add space above filters */
+  margin-bottom: 1.5rem;
+}
+   /*-- Our team!*/
+   #projects {
+  margin-top: 300px;
+   }
+
+.team-spotlight-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3.5rem;
+  margin: 5rem 0 6rem 0;
+}
+
+
+#category-select {
+  padding: 10px 15px;
+  background-color: transparent;
+  color: #FAA307;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#category-select:hover {
+  border-color: #ffa500;
+  color: #fdfcfc;
+}
+
+
+#area-select {
+  padding: 10px;
+  background-color: transparent;
+  color: #FAA307;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#area-select:hover {
+  border-color: #ffa500;
+  color: #fdfcfc;
+}
+
+
+.team-spotlight-card {
+  background: rgba(24, 23, 23, 0.98);
+  border-radius: 2.5rem;
+  box-shadow: 0 12px 60px rgba(0,0,0,0.32);
+  padding: 4.5rem 5rem;
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  min-width: 700px;
+  max-width: 900px;
+}
+
+.team-photo-glow {
+  border-radius: 50%;
+  padding: 12px;
+  background: radial-gradient(circle, #FAA307 0%, #181717 70%);
+  box-shadow: 0 0 60px 18px #faa30755;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.team-photo-large {
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 7px solid #fff;
+  box-shadow: 0 6px 32px #faa30744;
+}
+
+.team-spotlight-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 320px;
+  max-width: 380px;
+  align-items: flex-start;
+}
+
+.team-hello {
+  color: #FAA307;
+  font-size: 1.2rem;
+  margin-bottom: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.team-name {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 0.3rem;
+  letter-spacing: 1px;
+  line-height: 1.1;
+}
+
+.team-role {
+  font-size: 1.5rem;
+  color: #FAA307;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.team-desc {
+  font-size: 1.15rem;
+  color: #fff;
+  min-height: 2.2em;
+  font-family: "Poppins", monospace;
+  letter-spacing: 0.2px;
+  margin-top: 0.5rem;
+  line-height: 1.5;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+.team-nav-btn {
+  background: #FAA307;
+  color: #181717;
+  border: none;
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  font-size: 2.5rem;
+  cursor: pointer;
+  box-shadow: 0 2px 12px #faa30744;
+  transition: background 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.team-nav-btn:hover {
+  background: #fff;
+  color: #FAA307;
+  transform: scale(1.10);
+}
+
+@media (max-width: 900px) {
+  .team-spotlight-card {
+    min-width: 90vw;
+    max-width: 98vw;
+    padding: 2.5rem 1.5rem;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .team-spotlight-info {
+    min-width: 0;
+    max-width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .team-spotlight-card {
+    padding: 1.2rem 0.5rem;
+  }
+  .team-photo-large {
+    width: 120px;
+    height: 120px;
+  }
+  .team-name {
+    font-size: 1.5rem;
+  }
+  .team-role {
+    font-size: 1rem;
+  }
+  .team-desc {
+    font-size: 0.95rem;
+  }
+  .team-spotlight-container {
+    gap: 1rem;
+  }
+  .team-nav-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+  }
+}
+
+.learn-more-btn {
+  background: linear-gradient(90deg, #FAA307 60%, #ffb347 100%);
+  color: #181717;
+  border: none;
+  border-radius: 1.5rem;
+  padding: 0.7rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 2px 12px #faa30744;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+  letter-spacing: 0.5px;
+}
+.learn-more-btn:hover {
+  background: #fff;
+  color: #FAA307;
+  transform: translateY(-2px) scale(1.04);
+}
