@@ -17,7 +17,7 @@
 
     <header>
         <!-- Logo -->
-        <a href="#" class="logo"><i class='bx bxs-dish'></i>CookITHow</a>
+        <a href="#" class="logo">CookSync</a>
 
         <!-- Menu Icon -->
         <div class="bx bx-menu" id="menu-icon">
@@ -27,18 +27,16 @@
         <!-- Nav Bar -->
         <ul class="navbar">
             <li><a href="#home" class="home">Home</a></li>
-            <li><a href="#cuisines" class="Cuisines">Cuisines</a></li>
-            <li><a href="#about" class="About">About</a></li>
-            
+            <li><a href="#cuisines" class="cuisines">Cuisines</a></li>
+            <li><a href="#projects" class="projects">Our Team</a></li>
         </ul>
+        <ul class="navbar">
+            <li>
+              <a href="#signup" class="Signup" onclick="window.open('/login.html', '_blank'); return false;">Join Us</a>
+            </li>
 
-
-
-            <button class="signup-btn">
-              <span>Sign up</span>
-              <i class='bx bx-caret-down'></i>
-            </button>
-        </div>
+        </ul>
+    </div>
     </header>
 
     <div class="recipe-finder-container">
@@ -48,7 +46,7 @@
         <input
           type="text"
           id="search-input"
-          placeholder="Search by name (eg. 'carrot')"
+          placeholder="Search by name (ex. 'carrot')"
         />
 
         <button type="submit" id="search-button">Search</button>
@@ -68,7 +66,6 @@
     <option value="">Filter by Area</option>
   </select>
 </div>
-
       <div class="message" id="message-area">
         Search for a recipe or get a random one!
       </div>
@@ -82,6 +79,31 @@
         <div id="recipe-details-content"></div>
       </div>
     </div>
+    </section>
+    <body>
+    <section id="projects">Our Team</section>
+    <div class="gallery">
+        <ul class="cards">
+          <li>0</li>
+      <img src="/assets/pogi.jpg" alt="Member 1" class="team-photo" />
+      <h3>Member 1</h3>
+      <p>Role: Frontend Developer</p>
+      </div>
+      <div class="team-member">
+      <img src="images/2.jpg" alt="Member 2" class="team-photo" />
+      <h3>Member 2</h3>
+      <p>Role: Backend Developer</p>
+      </div>
+      <div class="team-member">
+      <img src="images/3.jpg" alt="Member 3" class="team-photo" />
+      <h3>Member 3</h3>
+      <p>Role: UI/UX Designer</p>
+      </div>
+      <div class="team-member">
+      <img src="images/3.jpg" alt="Member 3" class="team-photo" />
+      <h3>Member 3</h3>
+      <p>Role: UI/UX Designer</p>
+          <body>
     <script src="main.js"></script>
   </body>
 </html>

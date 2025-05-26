@@ -24,10 +24,74 @@ searchForm.addEventListener("submit", (e) => {
   if (searchTerm) {
     searchRecipes(searchTerm);
   } else {
-    showMessage("Please enter a search term", true);
+    showMessage("Please search a recipe!", true);
+  }
+});
+async function populateFilters() {
+  // Populate categories
+  const catRes = await fetch(CATEGORY_LIST_API);
+  const catData = await catRes.json();
+  catData.meals.forEach(cat => {
+    const opt = document.createElement("option");
+    opt.value = cat.strCategory;
+    opt.textContent = cat.strCategory;
+    categorySelect.appendChild(opt);
+  });
+
+  // Populate areas
+  const areaRes = await fetch(AREA_LIST_API);
+  const areaData = await areaRes.json();
+  areaData.meals.forEach(area => {
+    const opt = document.createElement("option");
+    opt.value = area.strArea;
+    opt.textContent = area.strArea;
+    areaSelect.appendChild(opt);
+  });
+}
+
+categorySelect.addEventListener("change", async function () {
+  const value = this.value;
+  areaSelect.value = ""; // Reset area filter if category is chosen
+  if (value) {
+    showMessage(`Filtering by category: ${value}`, false, true);
+    resultsGrid.innerHTML = "";
+    const res = await fetch(FILTER_BY_CATEGORY_API + encodeURIComponent(value));
+    const data = await res.json();
+    clearMessage();
+    if (data.meals) {
+      displayRecipes(data.meals);
+    } else {
+      showMessage("No recipes found for this category.");
+    }
+  } else {
+    resultsGrid.innerHTML = "";
+    showMessage("Please select a filter or search for a recipe.");
   }
 });
 
+
+areaSelect.addEventListener("change", async function () {
+  const value = this.value;
+  categorySelect.value = ""; // Reset category filter if area is chosen
+  if (value) {
+    showMessage(`Filtering by area: ${value}`, false, true);
+    resultsGrid.innerHTML = "";
+    const res = await fetch(FILTER_BY_AREA_API + encodeURIComponent(value));
+    const data = await res.json();
+    clearMessage();
+    if (data.meals) {
+      displayRecipes(data.meals);
+    } else {
+      showMessage("No recipes found for this area.");
+    }
+  } else {
+    resultsGrid.innerHTML = "";
+    showMessage("Please select a filter or search for a recipe.");
+  }
+});
+
+// Call this on page load
+populateFilters();
 async function searchRecipes(query) {
   showMessage(`Searching for "${query}"...`, false, true);
   resultsGrid.innerHTML = "";
@@ -81,95 +145,46 @@ function displayRecipes(recipes) {
   });
 }
 
-randomButton.addEventListener("click", getRandomRecipe);
+randomButton.addEventListener("click", getRandomRecipes);
 
-async function getRandomRecipe() {
-  showMessage("Fetching a random recipe...", false, true);
+async function getRandomRecipes() {
+  const minRecipes = 2;
+  const maxRecipes = 5;
+  const numRecipes = Math.floor(Math.random() * (maxRecipes - minRecipes + 1)) + minRecipes;
+
+  showMessage(`Fetching ${numRecipes} random recipe${numRecipes > 1 ? "s" : ""}...`, false, true);
   resultsGrid.innerHTML = "";
 
   try {
-    const response = await fetch(RANDOM_API_URL);
-    if (!response.ok) throw new Error("Something went wrong.");
-    const data = await response.json();
-
+    const fetches = [];
+    for (let i = 0; i < numRecipes; i++) {
+      fetches.push(
+        fetch(RANDOM_API_URL).then(res => {
+          if (!res.ok) throw new Error("Something went wrong.");
+          return res.json();
+        })
+      );
+    }
+    const results = await Promise.all(fetches);
     clearMessage();
 
-    if (data.meals && data.meals.length > 0) {
-      displayRecipes(data.meals);
+    // Flatten and filter out any failed fetches
+    const recipes = results
+      .map(data => (data.meals && data.meals.length > 0 ? data.meals[0] : null))
+      .filter(Boolean);
+
+    if (recipes.length > 0) {
+      displayRecipes(recipes);
     } else {
-      showMessage("Could not fetch a random recipe. Please try again.", true);
+      showMessage("Could not fetch random recipes. Please try again.", true);
     }
   } catch (error) {
     showMessage(
-      "Failed to fetch a random recipe. Please check your connection and try again.",
+      "Failed to fetch random recipes. Please check your connection and try again.",
       true
     );
   }
 }
-async function populateFilters() {
-  // Populate categories
-  const catRes = await fetch(CATEGORY_LIST_API);
-  const catData = await catRes.json();
-  catData.meals.forEach(cat => {
-    const opt = document.createElement("option");
-    opt.value = cat.strCategory;
-    opt.textContent = cat.strCategory;
-    categorySelect.appendChild(opt);
-  });
-
-  // Populate areas
-  const areaRes = await fetch(AREA_LIST_API);
-  const areaData = await areaRes.json();
-  areaData.meals.forEach(area => {
-    const opt = document.createElement("option");
-    opt.value = area.strArea;
-    opt.textContent = area.strArea;
-    areaSelect.appendChild(opt);
-  });
-}
-
-categorySelect.addEventListener("change", async function () {
-  const value = this.value;
-  areaSelect.value = ""; // Reset area filter if category is chosen
-  if (value) {
-    showMessage(`Filtering by category: ${value}`, false, true);
-    resultsGrid.innerHTML = "";
-    const res = await fetch(FILTER_BY_CATEGORY_API + encodeURIComponent(value));
-    const data = await res.json();
-    clearMessage();
-    if (data.meals) {
-      displayRecipes(data.meals);
-    } else {
-      showMessage("No recipes found for this category.");
-    }
-  } else {
-    resultsGrid.innerHTML = "";
-    showMessage("Please select a filter or search for a recipe.");
-  }
-});
-
-areaSelect.addEventListener("change", async function () {
-  const value = this.value;
-  categorySelect.value = ""; // Reset category filter if area is chosen
-  if (value) {
-    showMessage(`Filtering by area: ${value}`, false, true);
-    resultsGrid.innerHTML = "";
-    const res = await fetch(FILTER_BY_AREA_API + encodeURIComponent(value));
-    const data = await res.json();
-    clearMessage();
-    if (data.meals) {
-      displayRecipes(data.meals);
-    } else {
-      showMessage("No recipes found for this area.");
-    }
-  } else {
-    resultsGrid.innerHTML = "";
-    showMessage("Please select a filter or search for a recipe.");
-  }
-});
-
-// Call this on page load
-populateFilters();
 
 function showModal() {
   modal.classList.remove("hidden");
@@ -234,6 +249,7 @@ function displayRecipeDetails(recipe) {
     }
   }
 
+    
   const categoryHTML = recipe.strCategory
     ? `<h3>Category: ${recipe.strCategory}</h3>`
     : "";
@@ -249,7 +265,7 @@ function displayRecipeDetails(recipe) {
   const youtubeHTML = recipe.strYoutube
     ? `<h3>Video Recipe</h3><div class="video-wrapper"><a href="${recipe.strYoutube}" target="_blank">Watch on YouTube</a><div>`
     : "";
-  const sourcHTML = recipe.strSource
+  const sourceHTML = recipe.strSource
     ? `<div class="source-wrapper"><a href="${recipe.strSource}" target="_blank">View Original Source</a></div>`
     : "";
 
@@ -261,6 +277,6 @@ function displayRecipeDetails(recipe) {
   ${ingredientsHTML}
   ${instructionsHTML}
   ${youtubeHTML}
-  ${sourcHTML}
+  ${sourceHTML}
   `;
 }
