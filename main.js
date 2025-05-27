@@ -50,45 +50,157 @@ async function populateFilters() {
   });
 }
 
-categorySelect.addEventListener("change", async function () {
-  const value = this.value;
-  areaSelect.value = ""; // Reset area filter if category is chosen
-  if (value) {
-    showMessage(`Filtering by category: ${value}`, false, true);
-    resultsGrid.innerHTML = "";
-    const res = await fetch(FILTER_BY_CATEGORY_API + encodeURIComponent(value));
-    const data = await res.json();
-    clearMessage();
-    if (data.meals) {
-      displayRecipes(data.meals);
-    } else {
-      showMessage("No recipes found for this category.");
-    }
-  } else {
+// Listen for changes on both filters and apply both at the same time
+categorySelect.addEventListener("change", applyFilters);
+areaSelect.addEventListener("change", applyFilters);
+
+async function applyFilters() {
+  const category = categorySelect.value;
+  const area = areaSelect.value;
+
+  // If neither filter is selected, prompt user
+  if (!category && !area) {
     resultsGrid.innerHTML = "";
     showMessage("Please select a filter or search for a recipe.");
+    return;
   }
+
+  showMessage(
+    `Filtering${category ? " by category: " + category : ""}${area ? (category ? " and" : " by") + " area: " + area : ""}`,
+    false,
+    true
+  );
+  resultsGrid.innerHTML = "";
+
+  try {
+    let meals = [];
+
+    // Fetch by category and/or area, combine results, remove duplicates, max 10
+    if (category) {
+      const catRes = await fetch(FILTER_BY_CATEGORY_API + encodeURIComponent(category));
+      const catData = await catRes.json();
+      if (catData.meals) meals = meals.concat(catData.meals);
+    }
+    if (area) {
+      const areaRes = await fetch(FILTER_BY_AREA_API + encodeURIComponent(area));
+      const areaData = await areaRes.json();
+      if (areaData.meals) meals = meals.concat(areaData.meals);
+    }
+
+    // Remove duplicates by idMeal
+    const uniqueMealsMap = new Map();
+    meals.forEach(m => uniqueMealsMap.set(m.idMeal, m));
+    const uniqueMeals = Array.from(uniqueMealsMap.values());
+
+    clearMessage();
+    if (uniqueMeals.length > 0) {
+      displayRecipes(uniqueMeals.slice(0, 10));
+    } else {
+      showMessage("No recipes found for this filter.");
+    }
+  } catch (error) {
+    showMessage("Failed to filter recipes. Please try again.", true);
+  }
+}
+
+// --- Automatic alignment for recipes (centered grid, responsive, fit to screen) ---
+function setResultsGridLayout(count) {
+  // For 10 recipes, use 5 columns; for fewer, adjust columns accordingly
+  let columns = 1;
+  if (count >= 10) columns = 5;
+  else if (count >= 6) columns = 3;
+  else if (count >= 4) columns = 2;
+  else columns = 1;
+
+  resultsGrid.style.display = "grid";
+  resultsGrid.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+  resultsGrid.style.justifyContent = "center";
+  resultsGrid.style.gap = "2rem";
+  resultsGrid.style.margin = "0 auto";
+  resultsGrid.style.maxWidth = "100vw";
+  resultsGrid.style.width = "100%";
+}
+
+// Patch displayRecipes to auto-align and add effects
+const _originalDisplayRecipes = displayRecipes;
+displayRecipes = function(recipes) {
+  setResultsGridLayout(recipes.length);
+  _originalDisplayRecipes(recipes);
+
+  // Enlarge recipe items to fit grid cell
+  const items = resultsGrid.querySelectorAll('.recipe-item');
+  items.forEach(item => {
+    item.style.width = "100%";
+    item.style.maxWidth = "100%";
+    item.style.boxSizing = "border-box";
+    // Add effect classes
+    item.classList.add('recipe-effect');
+  });
+};
+
+// --- Add effect styles ---
+const style = document.createElement('style');
+style.textContent = `
+.recipe-effect {
+  transition: filter 0.3s, box-shadow 0.3s, transform 0.2s;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+}
+.recipe-effect.highlighted {
+  filter: none !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  z-index: 2;
+}
+.recipe-effect.blurred {
+  filter: blur(3.5px) brightness(0.9);
+}
+.recipe-effect.bounce {
+  animation: bounce-effect 0.5s;
+}
+@keyframes bounce-effect {
+  0%   { transform: scale(1); }
+  20%  { transform: scale(1.1, 0.95); }
+  40%  { transform: scale(0.95, 1.05); }
+  60%  { transform: scale(1.05, 0.98); }
+  80%  { transform: scale(0.98, 1.02); }
+  100% { transform: scale(1); }
+}
+`;
+document.head.appendChild(style);
+
+// --- Blur background recipes on hover ---
+resultsGrid.addEventListener("mouseover", function(e) {
+  const card = e.target.closest(".recipe-item");
+  if (card) {
+    const items = resultsGrid.querySelectorAll('.recipe-item');
+    items.forEach(item => {
+      if (item === card) {
+        item.classList.add("highlighted");
+        item.classList.remove("blurred");
+      } else {
+        item.classList.add("blurred");
+        item.classList.remove("highlighted");
+      }
+    });
+  }
+});
+resultsGrid.addEventListener("mouseout", function(e) {
+  // Remove all blur/highlight when mouse leaves any card
+  const items = resultsGrid.querySelectorAll('.recipe-item');
+  items.forEach(item => {
+    item.classList.remove("blurred", "highlighted");
+  });
 });
 
-areaSelect.addEventListener("change", async function () {
-  const value = this.value;
-  categorySelect.value = ""; // Reset category filter if area is chosen
-  if (value) {
-    showMessage(`Filtering by area: ${value}`, false, true);
-    resultsGrid.innerHTML = "";
-    const res = await fetch(FILTER_BY_AREA_API + encodeURIComponent(value));
-    const data = await res.json();
-    clearMessage();
-    if (data.meals) {
-      displayRecipes(data.meals);
-    } else {
-      showMessage("No recipes found for this area.");
-    }
-  } else {
-    resultsGrid.innerHTML = "";
-    showMessage("Please select a filter or search for a recipe.");
+// --- Add bounce effect on click ---
+resultsGrid.addEventListener("click", function(e) {
+  const card = e.target.closest(".recipe-item");
+  if (card) {
+    card.classList.add("bounce");
+    setTimeout(() => card.classList.remove("bounce"), 500);
   }
-});
+}, true);
 
 // Call this on page load
 populateFilters();
@@ -373,3 +485,53 @@ function showMemberDetailsModal(member) {
 
 // Initialize on load
 showTeamMember(currentMember);
+document.addEventListener('DOMContentLoaded', function() {
+    const header = document.querySelector('header');
+    let lastScrollTop = 0;
+    
+    window.addEventListener('scroll', function() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Add scrolled class when user scrolls down more than 50px
+        if (scrollTop > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+        
+        lastScrollTop = scrollTop;
+    });
+});
+      function scrollToRecipeFinder() {
+        const container = document.getElementById('recipe-finder');
+        if (!container) return;
+        const rect = container.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        window.scrollTo({
+          top: rect.top + scrollTop - 60, // adjust offset for header if needed
+          behavior: 'smooth'
+        });
+        // Add transition effect
+        container.classList.remove('slide-up', 'slide-down');
+        const currentScroll = window.scrollY;
+        setTimeout(() => {
+          if (currentScroll < rect.top + scrollTop) {
+            container.classList.add('slide-down');
+          } else {
+            container.classList.add('slide-up');
+          }
+          setTimeout(() => {
+            container.classList.remove('slide-up', 'slide-down');
+          }, 700);
+        }, 100);
+      }
+      function scrollToProjects() {
+        const projectsSection = document.getElementById('projects');
+        if (!projectsSection) return;
+        const rect = projectsSection.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        window.scrollTo({
+          top: rect.top + scrollTop - 60, // adjust offset for header if needed
+          behavior: 'smooth'
+        });
+      }

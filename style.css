@@ -22,17 +22,6 @@ section {
   min-height: unset; /* Remove forced height */
 }
 
-body {
-  font-family: "Poppins", sans-serif;
-  line-height: 100%;
-  background-image: url(/assets/cook.png);
-  background-repeat: no-repeat;
-  background-size: cover;         
-  background-position: center;    
-  background-attachment: fixed;   
-  color: #FAA307;
-}
-
 header {
   position: fixed;
   width: 100%;
@@ -43,15 +32,49 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: transparent;
-  box-shadow: 0 8px 11px rgba(235, 232, 232, 0.15);
+  background-color: rgba(0, 0, 0, 0.1); /* Start with slight transparency */
+  backdrop-filter: blur(10px); /* Add blur effect */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 20px 100px;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease, top 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-header.visible {
-  background-color: rgba(0, 0, 0, 0.8);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.6);
+/* When scrolled - more opaque background */
+header.scrolled {
+  background-color: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Ensure content doesn't hide behind fixed header */
+body {
+  font-family: "Poppins", sans-serif;
+  line-height: 100%;
+  background-image: url(/assets/cook.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #FAA307;
+  padding-top: 80px; /* Add padding to account for fixed header */
+}
+
+/* Adjust the recipe container padding */
+.recipe-finder-container {
+  text-align: center;
+  margin-inline: auto;
+  height: 75vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding-top: 70px; /* Add extra padding for better spacing */
+}
+
+/* Adjust h1 padding since we added body padding */
+h1 {
+  padding-top: 80px; /* Reduced since body now has padding */
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  letter-spacing: -1px;
 }
 
 .logo {
@@ -83,6 +106,7 @@ header.visible {
   font-size: 1.2rem;
   font-weight: 500;
   padding: 0.5rem 1rem;
+  transition: step-end 0.7s ease, slow 0.5s;
 }
 
 .Signup {
@@ -283,7 +307,7 @@ h1 {
   position: absolute;
   top: 15px;
   right: 15px;
-  background-color: var(--light-bg);
+  background-color: tra;
   border: 1px solid #e9ecef;
   border-radius: 50%;
   height: 35px;
@@ -381,7 +405,13 @@ h1 {
   color: #ff7e00;
 }
 
-
+.our-team-title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: #FAA307;
+}
 
 .filter-controls {
   display: flex;
@@ -402,6 +432,39 @@ h1 {
   gap: 3.5rem;
   margin: 5rem 0 6rem 0;
 }
+
+
+#category-select {
+  padding: 10px 15px;
+  background-color: transparent;
+  color: #FAA307;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#category-select:hover {
+  border-color: #ffa500;
+  color: #fdfcfc;
+}
+
+
+#area-select {
+  padding: 10px;
+  background-color: transparent;
+  color: #FAA307;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#area-select:hover {
+  border-color: #ffa500;
+  color: #fdfcfc;
+}
+
 
 .team-spotlight-card {
   background: rgba(24, 23, 23, 0.98);
