@@ -392,117 +392,7 @@ function displayRecipeDetails(recipe) {
   `;
 }
 
-// --- OUR TEAM SPOTLIGHT SECTION ---
-
-const teamMembers = [
-  {
-    name: "Regodon, Ivan Ezekiel G.",
-    role: "Frontend Developer",
-    photo: "/assets/pogi.jpg",
-    desc: "Welcome to my personal website. I love building beautiful and functional user interfaces!"
-  },
-  {
-    name: "Member 2",
-    role: "Backend Developer",
-    photo: "images/2.jpg",
-    desc: "I specialize in server-side logic and database management. Let's build something amazing together!"
-  },
-  {
-    name: "Member 3",
-    role: "UI/UX Designer",
-    photo: "images/3.jpg",
-    desc: "Design is not just what it looks like and feels like. Design is how it works."
-  }
-];
-
-let currentMember = 0;
-let typingTimeout;
-
-function showTeamMember(idx) {
-  const member = teamMembers[idx];
-  document.getElementById("team-photo").src = member.photo;
-  document.getElementById("team-photo").alt = member.name;
-  document.getElementById("team-name").textContent = member.name;
-  document.getElementById("team-role").textContent = member.role;
-  autoType(member.desc);
-
-  // Add Learn More button if not present
-  let learnMoreBtn = document.getElementById("learn-more-btn");
-  if (!learnMoreBtn) {
-    learnMoreBtn = document.createElement("button");
-    learnMoreBtn.id = "learn-more-btn";
-    learnMoreBtn.textContent = "Learn More";
-    learnMoreBtn.className = "learn-more-btn";
-    document.querySelector(".team-spotlight-info").appendChild(learnMoreBtn);
-    learnMoreBtn.addEventListener("click", function (e) {
-      e.stopPropagation();
-      showMemberDetailsModal(member);
-    });
-  }
-}
-
-function autoType(text) {
-  const descElem = document.getElementById("team-desc");
-  descElem.textContent = "";
-  let i = 0;
-  clearTimeout(typingTimeout);
-
-  function typeChar() {
-    if (i <= text.length) {
-      descElem.textContent = text.slice(0, i);
-      i++;
-      typingTimeout = setTimeout(typeChar, 35);
-    }
-  }
-  typeChar();
-}
-
-const spotlightContainer = document.querySelector('.team-spotlight-container');
-const spotlightCard = document.querySelector('.team-spotlight-card');
-
-// Go to next member when mouse leaves the container
-spotlightContainer.addEventListener('mouseleave', function () {
-  currentMember = (currentMember + 1) % teamMembers.length;
-  showTeamMember(currentMember);
-});
-
-// Show full details when clicking inside the card or Learn More button
-spotlightCard.addEventListener('click', function () {
-  showMemberDetailsModal(teamMembers[currentMember]);
-});
-
-function showMemberDetailsModal(member) {
-  modalContent.innerHTML = `
-    <h2>${member.name}</h2>
-    <img src="${member.photo}" alt="${member.name}" style="width:180px;height:180px;border-radius:50%;margin-bottom:1rem;">
-    <h3>${member.role}</h3>
-    <p style="margin-top:1.5rem;font-size:1.1rem;">${member.desc}</p>
-    <button id="close-member-modal" class="learn-more-btn" style="margin-top:2rem;">Close</button>
-  `;
-  showModal();
-  document.getElementById("close-member-modal").onclick = closeModal;
-}
-
-// Initialize on load
-showTeamMember(currentMember);
-document.addEventListener('DOMContentLoaded', function() {
-    const header = document.querySelector('header');
-    let lastScrollTop = 0;
-    
-    window.addEventListener('scroll', function() {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        // Add scrolled class when user scrolls down more than 50px
-        if (scrollTop > 50) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
-        
-        lastScrollTop = scrollTop;
-    });
-});
-      function scrollToRecipeFinder() {
+function scrollToRecipeFinder() {
         const container = document.getElementById('recipe-finder');
         if (!container) return;
         const rect = container.getBoundingClientRect();
@@ -535,3 +425,256 @@ document.addEventListener('DOMContentLoaded', function() {
           behavior: 'smooth'
         });
       }
+
+// Auto-typing function for profile hover
+class AutoTyper {
+    constructor(element, options = {}) {
+        this.element = element;
+        this.typeSpeed = options.typeSpeed || 50;
+        this.deleteSpeed = options.deleteSpeed || 30;
+        this.pauseTime = options.pauseTime || 1000;
+        this.isTyping = false;
+        this.currentTimeout = null;
+    }
+
+    async type(text) {
+        if (this.isTyping) {
+            this.stop();
+        }
+        
+        this.isTyping = true;
+        this.element.textContent = '';
+        
+        for (let i = 0; i < text.length; i++) {
+            if (!this.isTyping) break;
+            
+            this.element.textContent += text[i];
+            await this.wait(this.typeSpeed);
+        }
+    }
+
+    async delete() {
+        if (!this.isTyping) return;
+        
+        const text = this.element.textContent;
+        for (let i = text.length; i > 0; i--) {
+            if (!this.isTyping) break;
+            
+            this.element.textContent = text.substring(0, i - 1);
+            await this.wait(this.deleteSpeed);
+        }
+    }
+
+    stop() {
+        this.isTyping = false;
+        if (this.currentTimeout) {
+            clearTimeout(this.currentTimeout);
+            this.currentTimeout = null;
+        }
+    }
+
+    wait(ms) {
+        return new Promise(resolve => {
+            this.currentTimeout = setTimeout(resolve, ms);
+        });
+    }
+}
+
+// Profile data with updated names to match your HTML
+const profileData = {
+    regod: {
+        name: "Ivan",
+        role: "THE MOST KUPAL",
+        description: "A beginner IT programmer. I specialize in building user-friendly interfaces using Java, HTML, and CSS, and I'm passionate about creating clean, responsive designs."
+    },
+    alex: {
+        name: "Jep",
+        role: "THE YOUNG DADDY", 
+        description: "Frontend developer and UI/UX designer passionate about creating seamless, user-centered digital experiences. Combines clean, responsive code with thoughtful design to craft intuitive interfaces that engage and delight users."
+    },
+    sarah: {
+        name: "Rhodney",
+        role: "THE MR MILLIONAIRE",
+        description: "Frontend developer and UI/UX designer passionate about creating seamless, user-centered digital experiences. Combines clean, responsive code with thoughtful design to craft intuitive interfaces that engage and delight users."
+    },
+    mike: {
+        name: "JD",
+        role: "THE BASSIST AND HARRIZZLER",
+        description: "Expert in server-side development and database optimization for high-performance applications."
+    }
+};
+
+// Function to get positioning based on profile layout
+function getProfilePosition(profileId, profileCard) {
+    const rect = profileCard.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    
+    // Position configurations for each profile based on their layout
+    const positions = {
+        regod: { // Ivan - space on the left
+            left: rect.left + scrollLeft - 320,
+            top: rect.top + scrollTop + (rect.height / 2) - 75,
+            textAlign: 'right'
+        },
+        alex: { // Jep - space on the right
+            left: rect.right + scrollLeft + 20,
+            top: rect.top + scrollTop + (rect.height / 2) - 75,
+            textAlign: 'left'
+        },
+        sarah: { // Rhodney - space on the left
+            left: rect.left + scrollLeft - 320,
+            top: rect.top + scrollTop + (rect.height / 2) - 75,
+            textAlign: 'right'
+        },
+        mike: { // JD - space on the right
+            left: rect.right + scrollLeft + 20,
+            top: rect.top + scrollTop + (rect.height / 2) - 75,
+            textAlign: 'left'
+        }
+    };
+    
+    return positions[profileId] || positions.alex; // Default to right side
+}
+
+// Initialize auto-typing functionality with positioned display
+function initProfileAutoType() {
+    // Create display container
+    const displayContainer = document.createElement('div');
+    displayContainer.id = 'profile-display';
+    displayContainer.style.cssText = `
+        position: absolute;
+        background: transparent;
+        padding: 20px;
+        border-radius: 10px;
+        color: white;
+        font-family: 'Poppins', Arial, sans-serif;
+        width: 280px;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 1000;
+        pointer-events: none;
+    `;
+
+    const nameElement = document.createElement('h2');
+    nameElement.id = 'auto-type-name';
+    nameElement.style.cssText = `
+        color: #ff8c00;
+        margin: 0 0 8px 0;
+        font-size: 24px;
+        font-weight: 600;
+        min-height: 30px;
+    `;
+
+    const roleElement = document.createElement('p');
+    roleElement.id = 'auto-type-role';
+    roleElement.style.cssText = `
+        color: #ff8c00;
+        margin: 0 0 12px 0;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        min-height: 18px;
+    `;
+
+    const descriptionElement = document.createElement('p');
+    descriptionElement.id = 'auto-type-description';
+    descriptionElement.style.cssText = `
+        color: #ccc;
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.4;
+        min-height: 60px;
+    `;
+
+    displayContainer.appendChild(nameElement);
+    displayContainer.appendChild(roleElement);
+    displayContainer.appendChild(descriptionElement);
+    document.body.appendChild(displayContainer);
+
+    // Create auto-typers
+    const nameTyper = new AutoTyper(nameElement, { typeSpeed: 80 });
+    const roleTyper = new AutoTyper(roleElement, { typeSpeed: 60 });
+    const descriptionTyper = new AutoTyper(descriptionElement, { typeSpeed: 40 });
+
+    // Add event listeners to profile cards
+    const profiles = document.querySelectorAll('[data-profile]');
+    
+    profiles.forEach(profile => {
+        const profileId = profile.getAttribute('data-profile');
+        
+        profile.addEventListener('mouseenter', async () => {
+            if (profileData[profileId]) {
+                const data = profileData[profileId];
+                const position = getProfilePosition(profileId, profile);
+                
+                // Position the display container
+                displayContainer.style.left = position.left + 'px';
+                displayContainer.style.top = position.top + 'px';
+                displayContainer.style.textAlign = position.textAlign;
+                
+                // Show display container
+                displayContainer.style.opacity = '1';
+                displayContainer.style.visibility = 'visible';
+                
+                // Start auto-typing sequence
+                await nameTyper.type(data.name);
+                await new Promise(resolve => setTimeout(resolve, 200));
+                await roleTyper.type(data.role);
+                await new Promise(resolve => setTimeout(resolve, 300));
+                await descriptionTyper.type(data.description);
+            }
+        });
+
+        profile.addEventListener('mouseleave', () => {
+            // Stop all typing
+            nameTyper.stop();
+            roleTyper.stop();
+            descriptionTyper.stop();
+            
+            // Hide display container
+            displayContainer.style.opacity = '0';
+            displayContainer.style.visibility = 'hidden';
+            
+            // Clear content after animation
+            setTimeout(() => {
+                nameElement.textContent = '';
+                roleElement.textContent = '';
+                descriptionElement.textContent = '';
+            }, 300);
+        });
+    });
+
+    // Update positions on window resize
+    window.addEventListener('resize', () => {
+        // Hide display during resize to prevent positioning issues
+        displayContainer.style.opacity = '0';
+        displayContainer.style.visibility = 'hidden';
+    });
+
+    // Update positions on scroll
+    window.addEventListener('scroll', () => {
+        if (displayContainer.style.visibility === 'visible') {
+            // Find the currently hovered profile and update position
+            const hoveredProfile = document.querySelector('[data-profile]:hover');
+            if (hoveredProfile && profileData[hoveredProfile.getAttribute('data-profile')]) {
+                const position = getProfilePosition(hoveredProfile.getAttribute('data-profile'), hoveredProfile);
+                displayContainer.style.left = position.left + 'px';
+                displayContainer.style.top = position.top + 'px';
+            }
+        }
+    });
+}
+
+// Initialize when DOM is loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initProfileAutoType);
+} else {
+    initProfileAutoType();
+}
+
+// Alternative initialization for dynamic content
+function reinitializeProfileAutoType() {
+    initProfileAutoType();
+}
