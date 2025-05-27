@@ -261,8 +261,8 @@ function displayRecipes(recipes) {
 randomButton.addEventListener("click", getRandomRecipes);
 
 async function getRandomRecipes() {
-  const minRecipes = 2;
-  const maxRecipes = 5;
+  const minRecipes = 4;
+  const maxRecipes = 4;
   const numRecipes = Math.floor(Math.random() * (maxRecipes - minRecipes + 1)) + minRecipes;
 
   showMessage(`Fetching ${numRecipes} random recipe${numRecipes > 1 ? "s" : ""}...`, false, true);

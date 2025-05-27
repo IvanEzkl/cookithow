@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome/CookITHow</title>
+    <link rel="stylesheet" href="intro.css">
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <!-- CHARACTER ELEMENT - Falls from left side -->
+    <div class="character" id="character">
+        <div class="character-body">
+            <div class="character-head"></div>
+            <div class="character-torso"></div>
+            <div class="character-arm character-arm-left"></div>
+            <div class="character-arm character-arm-right"></div>
+            <div class="character-leg character-leg-left"></div>
+            <div class="character-leg character-leg-right"></div>
+        </div>
+    </div>
+    
+    <div class="text-container">
+        <div class="animated-text" id="animatedText">
+        </div>
+    </div>
+    
+    <div class="click-prompt" id="clickPrompt">
+        Click anywhere to continue...
+    </div>
+    
+    <div class="page-transition" id="pageTransition"></div>
+
+    <!-- LOADING OVERLAY - Fully Customizable -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+<script src="intro.js"></script>
+</body>
+</html>
