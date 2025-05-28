@@ -380,16 +380,37 @@ function displayRecipeDetails(recipe) {
     ? `<div class="source-wrapper"><a href="${recipe.strSource}" target="_blank">View Original Source</a></div>`
     : "";
 
+  // --- Insert the checkbox for marking as finished ---
   modalContent.innerHTML = `
-  <h2>${recipe.strMeal}</h2>
-  <img src="${recipe.strMealThumb}" alt="${recipe.strMeal}">
-  ${categoryHTML}
-  ${areaHTML}
-  ${ingredientsHTML}
-  ${instructionsHTML}
-  ${youtubeHTML}
-  ${sourceHTML}
+    <h2>${recipe.strMeal}</h2>
+    <img src="${recipe.strMealThumb}" alt="${recipe.strMeal}">
+    ${categoryHTML}
+    ${areaHTML}
+    ${ingredientsHTML}
+    ${instructionsHTML}
+    ${youtubeHTML}
+    ${sourceHTML}
+    <div style="margin-top:1.5rem;">
+      <input type="checkbox" id="dish-finished-checkbox">
+      <label for="dish-finished-checkbox">Mark this dish as finished</label>
+    </div>
   `;
+
+  // Add event listener for the checkbox
+  const finishedCheckbox = document.getElementById("dish-finished-checkbox");
+  if (finishedCheckbox) {
+    finishedCheckbox.addEventListener("change", function(e) {
+      if (e.target.checked) {
+        saveDishCompletionToDatabase(recipe);
+      }
+    });
+  }
+}
+
+// Add this function anywhere in your JS file (outside displayRecipeDetails)
+function saveDishCompletionToDatabase(recipe) {
+  // Replace this with your actual database logic (AJAX/fetch)
+  alert(`Marked "${recipe.strMeal}" as finished! (Send to database here)`);
 }
 
 function scrollToRecipeFinder() {
