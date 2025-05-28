@@ -1,20 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Recipe Finder</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-
+</head>
+<body>
     <header>
         <!-- Logo -->
         <a href="#" class="logo">CookITHow</a>
@@ -25,79 +21,122 @@
         <!-- Nav Bar -->
         <ul class="navbar">
             <li>
-              <a href="#home" class="home" onclick="event.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' });">Home</a>
+                <a href="#home" class="home" onclick="event.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' });">Home</a>
             </li>
             <li>
-              <a href="#recipe-finder" class="cuisines" onclick="event.preventDefault(); scrollToRecipeFinder(700);">Cuisines</a>
+                <a href="#recipe-finder" class="cuisines" onclick="event.preventDefault(); scrollToRecipeFinder(700);">Cuisines</a>
             </li>
             <li>
-              <a href="#projects" class="ourteam" onclick="event.preventDefault(); document.querySelector('#projects').scrollIntoView({ behavior: 'smooth' });">Our Team</a>
+                <a href="#team-section" class="ourteam" onclick="event.preventDefault(); document.querySelector('#team-section').scrollIntoView({ behavior: 'smooth' });">Devs</a>
             </li>
         </ul>
         <ul class="navbar">
             <li>
-              <a href="#signup" class="Signup" onclick="window.open('login.html'); return false;">Log In</a>
+                <a href="#signup" class="Signup" onclick="window.open('login.html'); return false;">Log In</a>
             </li>
         </ul>
     </header>
 
     <div class="recipe-finder-container" id="recipe-finder">
-      <h1>Recipe Finder</h1>
+        <h1>Recipe Finder</h1>
 
-      <form id="search-form" class="search-box">
-        <input
-          type="text"
-          id="search-input"
-          placeholder="Search by name (ex. 'carrot')"
-        />
-        <button type="submit" id="search-button">Search</button>
-      </form>
+        <form id="search-form" class="search-box">
+            <input type="text" id="search-input" placeholder="Search by name (ex. 'carrot')" />
+            <button type="submit" id="search-button">Search</button>
+        </form>
 
-      <div class="random-button-container">
-        <button id="random-button" class="random-button">
-          Get Random Recipe
-        </button>
-      </div>
-      
-      <div class="filter-controls">
-        <select id="category-select">
-          <option value="">Filter by Category</option>
-        </select>
-        <select id="area-select">
-          <option value="">Filter by Area</option>
-        </select>
-      </div>
-      <div class="message" id="message-area">
-        Search for a recipe or get a random one!
-      </div>
-
-      <div class="results-grid" id="results-grid"></div>
-
-      <div class="modal-container hidden" id="recipe-modal">
-        <div class="modal-content">
-          <button id="modal-close-btn" class="modal-close-btn">+</button>
-          <div id="recipe-details-content"></div>
-        </div>
-      </div>
+        <div class="random-button-container">
+            <button id="random-button" class="random-button">
+                Get Random Recipe
+            </button>
         </div>
 
-    <section id="projects">
-      <h2 class="our-team-title">Our Team</h2>
-      <div class="team-spotlight-container">
-      <div class="team-spotlight-card">
-        <div class="team-photo-glow">
-        <img id="team-photo" src="/assets/pogi.jpg" alt="Regod" class="team-photo-large" />
+        <div class="filter-controls">
+            <select id="category-select">
+                <option value="">Filter by Category</option>
+            </select>
+            <select id="area-select">
+                <option value="">Filter by Area</option>
+            </select>
         </div>
-        <div class="team-spotlight-info">
-        <div class="team-hello">Hello World, I'm</div>
-        <div class="team-name" id="team-name">Regod</div>
-        <div class="team-role" id="team-role">Frontend Developer</div>
-        <div class="team-desc" id="team-desc"></div>
+        <div class="message" id="message-area">
+            Search for a recipe or get a random one!
         </div>
-      </div>
-      <a href="team.html" class="view-all-team-btn">View All Team Members</a>
-      </div>
+
+        <div class="results-grid" id="results-grid"></div>
+
+        <div class="modal-container hidden" id="recipe-modal">
+            <div class="modal-content">
+                <button id="modal-close-btn" class="modal-close-btn">+</button>
+                <div id="recipe-details-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Separated Team Section - Now with Video Background -->
+    <section id="team-section" class="team-section">
+        <!-- Video Background -->
+        <video class="team-video-background" autoplay muted loop playsinline>
+            <source src="/assets/vidbg.mp4" type="video/mp4">
+            <!-- Add additional video formats for better browser support -->
+            <source src="/assets/vidbg.webm" type="video/webm">
+            <!-- Fallback message for browsers that don't support video -->
+            Your browser does not support the video tag.
+        </video>
+        
+        <!-- Video Overlay for Better Text Readability -->
+        <div class="team-video-overlay"></div>
+        
+        <h2 class="our-team-title">Our Team</h2>
+        <ul class="team-grid-container">
+            <li class="team-card" data-profile="regod">
+                <div class="team-photo-glow">
+                    <img src="/assets/pogi.jpg" alt="Regod" class="team-photo-large" />
+                </div>
+                <div class="team-info">
+                    <div class="team-name">Ivan</div>
+                    <div class="team-role">Frontend Developer</div>
+                    <div class="team-desc">a beginner IT programmer. I specialize in building user-friendly interfaces using Java, HTML, and CSS, and I'm passionate about creating clean, responsive designs.</div>
+                </div>
+            </li>
+            
+            <li class="team-card" data-profile="alex">
+                <div class="team-photo-glow">
+                    <img src="/assets/jep.jpeg" alt="Team Member 2" class="team-photo-large" />
+                </div>
+                <div class="team-info">
+                    <div class="team-name">Jep</div>
+                    <div class="team-role">Frontend Developer</div>
+                    <div class="team-role">UI/UX Designer</div>
+                    <div class="team-desc">Frontend developer and UI/UX designer passionate about creating seamless, user-centered digital experiences. Combines clean, responsive code with thoughtful design to craft intuitive interfaces that engage and delight users.</div>
+                </div>
+            </li>
+            
+            <li class="team-card" data-profile="sarah">
+                <div class="team-photo-glow">
+                    <img src="/assets/rhodney.jpg" alt="Team Member 3" class="team-photo-large" />
+                </div>
+                <div class="team-info">
+                    <div class="team-name">Rhodney</div>
+                    <div class="team-role">Frontend Developer</div>
+                    <div class="team-role">UI/UX Designer</div>
+                    <div class="team-desc">Creative designer focused on crafting intuitive and visually appealing digital experiences.</div>
+                </div>
+            </li>
+            
+            <li class="team-card" data-profile="mike">
+                <div class="team-photo-glow">
+                    <img src="/assets/jd.jpg" alt="Team Member 4" class="team-photo-large" />
+                </div>
+                <div class="team-info">
+                    <div class="team-name">JD</div>
+                    <div class="team-role">Back-end Developer</div>
+                    <div class="team-desc">Expert in server-side development and database optimization for high-performance applications.</div>
+                </div>
+            </li>
+        </ul>
     </section>
+
     <script src="main.js"></script>
-  </body>
+</body>
 </html>
