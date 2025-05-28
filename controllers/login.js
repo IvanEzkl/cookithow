@@ -213,75 +213,227 @@ document.getElementById('signup-btn').addEventListener('click', function(e) {
     window.location.href = 'login.html';
 });
 
-// Random character animations
-function randomCharacterAnimation() {
-    const availableCharacters = characters.filter(character => 
-        !character.className.includes('happy') && 
-        !character.className.includes('peek') && 
-        !character.className.includes('surprised')
-    );
-    
-    if (availableCharacters.length > 0) {
-        const randomCharacter = availableCharacters[Math.floor(Math.random() * availableCharacters.length)];
-        const animations = ["peek", "surprised"];
-        const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
-        
-        randomCharacter.className = randomCharacter.className.replace(/\s(happy|peek|surprised)/g, '') + ` ${randomAnimation}`;
-        
-        setTimeout(() => {
-            randomCharacter.className = randomCharacter.className.replace(/\s(happy|peek|surprised)/g, '');
-        }, 1500);
+window.addEventListener('DOMContentLoaded', () => {
+    // Place characters just above the visible bottom of the viewport
+    // and make them walk back and forth horizontally, end to end
+
+    // Create a container for the characters at the bottom
+    let bottomContainer = document.getElementById('bottom-characters-container');
+    if (!bottomContainer) {
+        bottomContainer = document.createElement('div');
+        bottomContainer.id = 'bottom-characters-container';
+        bottomContainer.style.position = 'fixed';
+        bottomContainer.style.left = '0';
+        bottomContainer.style.width = '100vw';
+        bottomContainer.style.height = '140px';
+        bottomContainer.style.pointerEvents = 'none';
+        bottomContainer.style.zIndex = '1000';
+        bottomContainer.style.bottom = '30px'; // 30px above the bottom edge for visibility
+        document.body.appendChild(bottomContainer);
     }
-}
 
-// Start random animations
-setInterval(randomCharacterAnimation, 4000);
-
-// Remember me functionality (basic example)
-const rememberMeCheckbox = document.getElementById("remember-me");
-if (rememberMeCheckbox) {
-    rememberMeCheckbox.addEventListener("change", function() {
-        if (this.checked) {
-            // Characters react positively to remember me
-            const randomCharacter = characters[Math.floor(Math.random() * characters.length)];
-            randomCharacter.className = randomCharacter.className.replace(/\s(happy|peek|surprised)/g, '') + " happy";
-            setTimeout(() => {
-                randomCharacter.className = randomCharacter.className.replace(/\s(happy|peek|surprised)/g, '');
-            }, 1500);
+    // Set up character heights and initial positions
+    const characterHeights = ['80px', '100px', '120px', '90px'];
+    characters.forEach((character, idx) => {
+        if (character) {
+            character.style.position = 'absolute';
+            character.style.top = '0';
+            character.style.left = (idx * 120) + 'px';
+            character.style.height = characterHeights[idx];
+            character.style.width = 'auto';
+            character.style.transform = 'translateY(0)';
+            character.style.transition = 'none';
+            // Move character to the bottom container
+            if (character.parentElement !== bottomContainer) {
+                bottomContainer.appendChild(character);
+            }
         }
     });
-}
 
-// Eye follow functionality
-document.addEventListener('mousemove', (event) => {
-    const mouseX = event.clientX;
-    const mouseY = event.clientY;
+    // Animation state
+    const animStates = characters.map(() => ({
+        running: true,
+        speed: 120,
+        direction: 1,
+        x: 0,
+        peek: false,
+        jumping: false,
+        excited: false,
+        gigglePhase: 0
+    }));
 
-    characters.forEach(character => {
-        // Find all eye elements inside the character
-        const eyes = character.querySelectorAll('.eye');
-        eyes.forEach(eye => {
-            // Get the position of the eye in the viewport
-            const eyeRect = eye.getBoundingClientRect();
-            const eyeCenterX = eyeRect.left + eyeRect.width / 2;
-            const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+    // Animate characters walking back and forth, end to end of the screen
+    function walkBackAndForth(character, idx) {
+        if (!character || !bottomContainer) return;
 
-            // Calculate the angle and distance from the eye to the mouse
-            const dx = mouseX - eyeCenterX;
-            const dy = mouseY - eyeCenterY;
-            const angle = Math.atan2(dy, dx);
+        function getBounds() {
+            const charWidth = character.offsetWidth || 60;
+            const minX = 0;
+            const maxX = window.innerWidth - charWidth;
+            return { minX, maxX, charWidth };
+        }
 
-            // Limit the movement radius of the pupil
-            const radius = 8; // px, adjust as needed
-            const pupilX = Math.cos(angle) * radius;
-            const pupilY = Math.sin(angle) * radius;
+        let { minX, maxX } = getBounds();
+        let state = animStates[idx];
+        state.direction = idx % 2 === 0 ? 1 : -1;
+        state.x = state.direction === 1 ? minX : maxX;
 
-            // Move the pupil inside the eye
-            const pupil = eye.querySelector('.pupil');
-            if (pupil) {
-                pupil.style.transform = `translate(${pupilX}px, ${pupilY}px)`;
+        let jumpStart = null;
+        let jumpDuration = 600; // ms
+        let jumpHeight = 60 + idx * 10;
+
+        function animate(now) {
+            ({ minX, maxX } = getBounds());
+
+            // If peeking, slow down to 0
+            if (state.peek) {
+                if (state.speed > 0) {
+                    state.speed -= 6; // Decelerate
+                    if (state.speed < 0) state.speed = 0;
+                }
+            } else {
+                if (state.speed < 120 + idx * 20) {
+                    state.speed += 6; // Accelerate back
+                    if (state.speed > 120 + idx * 20) state.speed = 120 + idx * 20;
+                }
+            }
+
+            if (state.speed > 0) {
+                state.x += state.direction * (state.speed / 60);
+                if (state.x > maxX) {
+                    state.x = maxX;
+                    state.direction = -1;
+                    character.style.transform = 'scaleX(-1)';
+                } else if (state.x < minX) {
+                    state.x = minX;
+                    state.direction = 1;
+                    character.style.transform = 'scaleX(1)';
+                }
+                character.style.left = state.x + 'px';
+            }
+
+            // Handle jump animation
+            if (state.jumping) {
+                if (!jumpStart) jumpStart = now;
+                let t = (now - jumpStart) / jumpDuration;
+                if (t > 1) {
+                    t = 1;
+                    state.jumping = false;
+                    jumpStart = null;
+                }
+                // Simple parabolic jump
+                let y = -jumpHeight * 4 * t * (1 - t);
+                character.style.transform = (state.direction === 1 ? 'scaleX(1)' : 'scaleX(-1)') + ` translateY(${y}px)`;
+            } else {
+                character.style.transform = state.direction === 1 ? 'scaleX(1)' : 'scaleX(-1)';
+                jumpStart = null;
+            }
+
+            // Excited giggle animation (eyes and wiggle)
+            if (state.excited) {
+                // Add "excited" class for eyes, and wiggle horizontally
+                character.classList.add('excited');
+                // Wiggle effect (reduced by 75%)
+                state.gigglePhase += 0.25 + 0.05 * idx;
+                const wiggle = Math.sin(state.gigglePhase) * 1.5; // 6 * 0.25 = 1.5
+                character.style.left = (state.x + wiggle) + 'px';
+            } else {
+                character.classList.remove('excited');
+                state.gigglePhase = 0;
+            }
+
+            requestAnimationFrame(animate);
+        }
+        character.style.transform = state.direction === 1 ? 'scaleX(1)' : 'scaleX(-1)';
+        requestAnimationFrame(animate);
+    }
+
+    // Start walking animation for each character
+    characters.forEach((character, idx) => {
+        walkBackAndForth(character, idx);
+    });
+
+    // Helper: set all characters to peek
+    function setCharactersPeek(peek) {
+        characters.forEach((character, idx) => {
+            animStates[idx].peek = peek;
+            if (peek) {
+                character.className = character.className.replace(/\s(happy|peek|surprised)/g, '') + " peek";
+            } else {
+                character.className = character.className.replace(/\s(happy|peek|surprised)/g, '');
             }
         });
-    });
-});
+    }
 
+    // Helper: set all characters to excited (giggling eyes)
+    function setCharactersExcited(excited) {
+        characters.forEach((character, idx) => {
+            animStates[idx].excited = excited;
+        });
+    }
+
+    // Find the login form
+    const loginForm = document.querySelector('.form');
+
+    // Listen for mouseenter/focus on the login form or its children
+    if (loginForm) {
+        // Mouse events
+        loginForm.addEventListener('mouseenter', () => {
+            setCharactersPeek(true);
+            setCharactersExcited(true);
+        });
+        loginForm.addEventListener('mouseleave', () => {
+            setCharactersPeek(false);
+            setCharactersExcited(false);
+        });
+        // Focus events for any input inside the form
+        loginForm.addEventListener('focusin', () => {
+            setCharactersPeek(true);
+            setCharactersExcited(true);
+        });
+        loginForm.addEventListener('focusout', () => {
+            setCharactersPeek(false);
+            setCharactersExcited(false);
+        });
+    }
+    // Also peek/excited if mouse is over any input in the form
+    const formInputs = loginForm ? loginForm.querySelectorAll('input, button, label') : [];
+    formInputs.forEach(input => {
+        input.addEventListener('mouseenter', () => {
+            setCharactersPeek(true);
+            setCharactersExcited(true);
+        });
+        input.addEventListener('mouseleave', () => {
+            setCharactersPeek(false);
+            setCharactersExcited(false);
+        });
+        input.addEventListener('focus', () => {
+            setCharactersPeek(true);
+            setCharactersExcited(true);
+        });
+        input.addEventListener('blur', () => {
+            setCharactersPeek(false);
+            setCharactersExcited(false);
+        });
+    });
+
+    // Recalculate bounds on window resize
+    window.addEventListener('resize', () => {
+        // No need to do anything here, bounds are recalculated in animate()
+    });
+
+    // Celebrate (jump) when login button is clicked
+    const loginBtn = document.getElementById("login-btn");
+    if (loginBtn) {
+        loginBtn.addEventListener("click", () => {
+            characters.forEach((character, idx) => {
+                animStates[idx].jumping = true;
+                // Optional: add happy face
+                character.className = character.className.replace(/\s(happy|peek|surprised)/g, '') + " happy";
+                setTimeout(() => {
+                    character.className = character.className.replace(/\s(happy|peek|surprised)/g, '');
+                }, 1200);
+            });
+        });
+    }
+});
