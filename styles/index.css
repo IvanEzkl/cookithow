@@ -735,3 +735,43 @@ h1 {
     opacity: 1.0; /* Slightly less visible on mobile */
   }
 }
+
+/* Skills Section */
+.skills-section {
+    padding: 1rem 1rem;
+    background: transparent;
+}
+
+.skills-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin:  auto;
+}
+
+.skill-icon {
+    margin-bottom: 1.5rem;
+    justify-content: center;
+}
+
+.skill-icon-img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    justify-content: center;
+}
+
+.skill-name {
+    font-size: 1.0rem;
+    font-weight: 600;
+    color: #e0cccc;
+    margin-bottom: 0.5rem;
+}
+
+.skill-level {
+    font-size: 1rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}

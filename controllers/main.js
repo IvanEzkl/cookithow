@@ -485,24 +485,59 @@ const profileData = {
     regod: {
         name: "Ivan",
         role: "THE MOST KUPAL",
-        description: "A beginner IT programmer. I specialize in building user-friendly interfaces using Java, HTML, and CSS, and I'm passionate about creating clean, responsive designs."
+        description: "A beginner IT programmer. I specialize in building user-friendly interfaces using Java, HTML, and CSS, and I'm passionate about creating clean, responsive designs.",
+        url: "ivan-profile.html" // Add URL for navigation
     },
     alex: {
         name: "Jep",
         role: "THE YOUNG DADDY", 
-        description: "Frontend developer and UI/UX designer passionate about creating seamless, user-centered digital experiences. Combines clean, responsive code with thoughtful design to craft intuitive interfaces that engage and delight users."
+        description: "Frontend developer and UI/UX designer passionate about creating seamless, user-centered digital experiences. Combines clean, responsive code with thoughtful design to craft intuitive interfaces that engage and delight users.",
+        url: "jep-profile.html" // Add URL for navigation
     },
     sarah: {
         name: "Rhodney",
         role: "THE MR MILLIONAIRE",
-        description: "Frontend developer and UI/UX designer passionate about creating seamless, user-centered digital experiences. Combines clean, responsive code with thoughtful design to craft intuitive interfaces that engage and delight users."
+        description: "Frontend developer and UI/UX designer passionate about creating seamless, user-centered digital experiences. Combines clean, responsive code with thoughtful design to craft intuitive interfaces that engage and delight users.",
+        url: "rhodney-profile.html" // Add URL for navigation
     },
     mike: {
         name: "JD",
         role: "THE BASSIST AND HARRIZZLER",
-        description: "Expert in server-side development and database optimization for high-performance applications."
+        description: "Expert in server-side development and database optimization for high-performance applications.",
+        url: "jd-profile.html" // Add URL for navigation
     }
 };
+
+// Function to navigate to profile page with smooth transition
+function navigateToProfile(profileId) {
+    const profileInfo = profileData[profileId];
+    if (profileInfo && profileInfo.url) {
+        // Create overlay for smooth transition
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0);
+            z-index: 9999;
+            transition: background 0.5s ease;
+            pointer-events: none;
+        `;
+        document.body.appendChild(overlay);
+        
+        // Trigger fade-out animation
+        setTimeout(() => {
+            overlay.style.background = 'rgba(0, 0, 0, 1)';
+        }, 10);
+        
+        // Navigate after transition completes
+        setTimeout(() => {
+            window.location.href = profileInfo.url;
+        }, 500);
+    }
+}
 
 // Function to get positioning based on profile layout
 function getProfilePosition(profileId, profileCard) {
@@ -604,6 +639,16 @@ function initProfileAutoType() {
     profiles.forEach(profile => {
         const profileId = profile.getAttribute('data-profile');
         
+        // Add click event listener for navigation
+        profile.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent any default behavior
+            navigateToProfile(profileId);
+        });
+        
+        // Add cursor pointer style to indicate clickability
+        profile.style.cursor = 'pointer';
+        
+        // Hover events for auto-typing
         profile.addEventListener('mouseenter', async () => {
             if (profileData[profileId]) {
                 const data = profileData[profileId];
