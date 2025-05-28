@@ -191,7 +191,7 @@ function transitionToNextPage() {
     // Hide loading and navigate after 2 seconds
     setTimeout(() => {
         // Replace with your actual HTML file name or path
-        window.location.href = '/index.html';
+        window.location.href = '/html/index.html';
     }, 2000); // 2 second loading duration - customize this value
     
 }

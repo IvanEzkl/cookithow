@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bagas Rakha Putra - Developer Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/jep-prof.css">
+</head>
+<body>
+    <div class="container">
+        <!-- About Me Section -->
+        <section class="about-section">
+            <div class="section-header">
+                <h1>About Me</h1>
+                <div class="underline"></div>
+            </div>
+            
+            <div class="about-content">
+                <div class="profile-image-container">
+                    <div class="profile-image">
+                        <img src="/assets/jep.jpeg" alt="Bagas Rakha Putra" class="avatar">
+                    </div>
+                </div>
+                
+                <div class="about-text">
+                    <p>Hi everyone! My name is Bagas Rakha Putra. I'm a web developer from Bogor, West Java. I have 1 year of experience in back-end web development. I really enjoy what I do right now, in my opinion, creating programs is not just a job, but also an art that has aesthetic value</p>
+                    
+                    <p>My job is to build your website to be functional and user-friendly yet still attractive. In addition, I provide a personal touch to your product and ensure that the website catches attention and is easy to use. My goal is to convey your message and identity in the most creative way. If you are interested in hiring me, please contact the listed contact.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section class="skills-section">
+            <div class="section-header">
+                <h2>Socials</h2>
+                <div class="underline"></div>
+            </div>
+            
+            <div class="skills-tabs">
+                <button class="tab-button active" data-tab="tech-stack">Connect</button>
+                <button class="tab-button" data-tab="tools">Tools</button>
+            </div>
+            
+            <div class="skills-content">
+                <div class="tab-content active" id="tech-stack">
+                    <div class="skills-grid">
+                        <div class="skill-card">
+                            <div class="skill-icon html">
+                            </div>
+                            <span class="skill-name">Facebook</span>
+                        </div>
+                        
+                        <div class="skill-card">
+                            <div class="skill-icon css">
+                            </div>
+                            <span class="skill-name">Instagram</span>
+                        </div>
+                        
+                        <div class="skill-card">
+                            <div class="skill-icon php">
+                            </div>
+                            <span class="skill-name">X</span>
+                        </div>
+                        
+                        <div class="skill-card">
+                            <div class="skill-icon javascript">
+                            </div>
+                            <span class="skill-name">Github</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="tools">
+                    <div class="skills-grid">
+                        <div class="skill-card">
+                            <div class="skill-icon tool">
+                                <span class="skill-text">VS</span>
+                            </div>
+                            <span class="skill-name">VS Code</span>
+                        </div>
+                        
+                        <div class="skill-card">
+                            <div class="skill-icon tool">
+                                <span class="skill-text">GIT</span>
+                            </div>
+                            <span class="skill-name">Git</span>
+                        </div>
+                        
+                        <div class="skill-card">
+                            <div class="skill-icon tool">
+                                <span class="skill-text">NPM</span>
+                            </div>
+                            <span class="skill-name">NPM</span>
+                        </div>
+                        
+                        <div class="skill-card">
+                            <div class="skill-icon tool">
+                                <span class="skill-text">PS</span>
+                            </div>
+                            <span class="skill-name">Photoshop</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Back Button -->
+        <button class="back-button" onclick="window.history.back()">
+            ← Back to Team
+        </button>
+    </div>
+
+    <script>
+        // Tab functionality
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and content
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Smooth entrance animation
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+        });
+    </script>
+</body>
+</html>
