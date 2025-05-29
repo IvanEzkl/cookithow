@@ -230,7 +230,7 @@ body.loaded {
 }
 
 .skill-icon.php {
-    background-image: url('/assets/icons/twitter.png');
+    background-image: url('/assets/icons/linkedin.png');
     background-size: cover; /* or contain, depending on how you want it to fit */
     background-position: center;
     background-repeat: no-repeat;

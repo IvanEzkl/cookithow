@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CookITHow - Recipe Finder</title>
+    <link rel="stylesheet" href="/user/user.css">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="navbar-container">
+        <a href="#" class="logo">
+            <i class="bx">🍳</i>
+            CookITHow
+        </a>
+
+        <!-- Main Navigation -->
+        <ul class="navbar">
+            <li><a href="#" class="home-active">Home</a></li>
+            <li><a href="#">Cuisines</a></li>
+            <li><a href="#">Devs</a></li>
+        </ul>
+
+        <!-- Auth Section -->
+        <ul class="navbar">
+            <li>
+                <!-- Login Button (shown when not authenticated) -->
+                <a href="#" class="Signup" id="loginBtn">Log In</a>
+                
+                <!-- Profile Section (hidden initially) -->
+                <div class="profile-container" id="profileContainer" style="display: none;">
+                    <button class="profile-button Signup" id="profileButton">
+                        <img 
+                            src="/api/placeholder/40/40" 
+                            alt="User Avatar"
+                            class="profile-avatar"
+                            id="profileAvatar"
+                        />
+                    </button>
+                    
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <div class="profile-info">
+                            <div class="profile-name" id="dropdownName">John Doe</div>
+                            <div class="profile-email" id="dropdownEmail">john@example.com</div>
+                        </div>
+                        <a href="#" class="dropdown-item">Profile Settings</a>
+                        <a href="#" class="dropdown-item">My Recipes</a>
+                        <a href="#" class="dropdown-item">Favorites</a>
+                        <button class="dropdown-item" id="logoutBtn">Logout</button>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        <div class="menu-icon" id="menuIcon">☰</div>
+    </header>
+    <div class="recipe-finder-container" id="recipe-finder">
+        <h1>Recipe Finder</h1>
+
+        <form id="search-form" class="search-box">
+            <input type="text" id="search-input" placeholder="Search by name (ex. 'carrot')" />
+            <button type="submit" id="search-button">Search</button>
+        </form>
+
+        <div class="random-button-container">
+            <button id="random-button" class="random-button">
+                Get Random Recipe
+            </button>
+        </div>
+
+        <div class="filter-controls">
+            <select id="category-select">
+                <option value="">Filter by Category</option>
+            </select>
+            <select id="area-select">
+                <option value="">Filter by Area</option>
+            </select>
+        </div>
+        <div class="message" id="message-area">
+            Search for a recipe or get a random one!
+        </div>
+
+        <div class="results-grid" id="results-grid"></div>
+
+        <div class="modal-container hidden" id="recipe-modal">
+            <div class="modal-content">
+                <button id="modal-close-btn" class="modal-close-btn">+</button>
+                <div id="recipe-details-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Separated Team Section - Now with Video Background -->
+    <section id="team-section" class="team-section">
+        <!-- Video Background -->
+        <video class="team-video-background" autoplay muted loop playsinline>
+            <source src="/assets/vidbg.mp4" type="video/mp4">
+            <!-- Add additional video formats for better browser support -->
+            <source src="/assets/vidbg.webm" type="video/webm">
+            <!-- Fallback message for browsers that don't support video -->
+            Your browser does not support the video tag.
+        </video>
+        
+        <!-- Video Overlay for Better Text Readability -->
+        <div class="team-video-overlay"></div>
+        
+        <h2 class="our-team-title">Our Team</h2>
+        <ul class="team-grid-container">
+            <li class="team-card" data-profile="regod">
+                <div class="team-photo-glow">
+                    <img src="/assets/pogi.jpg" alt="Regod" class="team-photo-large" />
+                </div>
+                <div class="team-info">
+                    <div class="team-name">Ivan</div>
+                    <div class="team-role">Back-end Developer</div>
+                   <section class="skills-section">
+                    <div class="skills-grid-container">
+                        <div class="skill-card">
+                            <div class="skill-icon">
+                                <img src="/assets/icons/html.png" alt="HTML" class="skill-icon-img" />
+                            </div>
+                            <div class="skill-info">
+                                <div class="skill-name">HTML</div>
+                                <div class="skill-level">Advanced</div>
+                            </div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">
+                                <img src="/assets/icons/css-3.png" alt="CSS" class="skill-icon-img" />
+                            </div>
+                            <div class="skill-info">
+                                <div class="skill-name">CSS</div>
+                                <div class="skill-level">Advanced</div>
+                            </div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">
+                                <img src="/assets/icons/js.png" alt="JavaScript" class="skill-icon-img" />
+                            </div>
+                            <div class="skill-info">
+                                <div class="skill-name">JavaScript</div>
+                                <div class="skill-level">Intermediate</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </li>
+            <li class="team-card" data-profile="alex">
+                <div class="team-photo-glow">
+                    <img src="/assets/jep.jpeg" alt="Team Member 2" class="team-photo-large" />
+                </div>
+                <div class="team-info">
+                    <div class="team-name">Jep</div>
+                    <div class="team-role">Frontend Developer</div>
+                    <div class="team-role">UI/UX Designer</div>
+                   <section class="skills-section">
+                    <div class="skills-grid-container">
+                        <div class="skill-card">
+                            <div class="skill-icon">
+                                <img src="/assets/icons/html.png" alt="HTML" class="skill-icon-img" />
+                            </div>
+                            <div class="skill-info">
+                                <div class="skill-name">HTML</div>
+                                <div class="skill-level">Advanced</div>
+                            </div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">
+                                <img src="/assets/icons/css-3.png" alt="CSS" class="skill-icon-img" />
+                            </div>
+                            <div class="skill-info">
+                                <div class="skill-name">CSS</div>
+                                <div class="skill-level">Advanced</div>
+                            </div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">
+                                <img src="/assets/icons/js.png" alt="JavaScript" class="skill-icon-img" />
+                            </div>
+                            <div class="skill-info">
+                                <div class="skill-name">JavaScript</div>
+                                <div class="skill-level">Intermediate</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </li>
+            </li>
+            
+            <li class="team-card" data-profile="sarah">
+                <div class="team-photo-glow">
+                    <img src="/assets/rhodney.jpg" alt="Team Member 3" class="team-photo-large" />
+                </div>
+                <div class="team-info">
+                    <div class="team-name">Rhodney</div>
+                    <div class="team-role">Frontend Developer</div>
+                    <div class="team-role">UI/UX Designer</div>
+                    <section class="skills-section">
+                    <div class="skills-grid-container">
+                        <div class="skill-card">
+                            <div class="skill-icon">
+                                <img src="/assets/icons/html.png" alt="HTML" class="skill-icon-img" />
+                            </div>
+                            <div class="skill-info">
+                                <div class="skill-name">HTML</div>
+                                <div class="skill-level">Advanced</div>
+                            </div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">
+                                <img src="/assets/icons/css-3.png" alt="CSS" class="skill-icon-img" />
+                            </div>
+                            <div class="skill-info">
+                                <div class="skill-name">CSS</div>
+                                <div class="skill-level">Advanced</div>
+                            </div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">
+                                <img src="/assets/icons/js.png" alt="JavaScript" class="skill-icon-img" />
+                            </div>
+                            <div class="skill-info">
+                                <div class="skill-name">JavaScript</div>
+                                <div class="skill-level">Intermediate</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </li>
+            <li class="team-card" data-profile="mike">
+                <div class="team-photo-glow">
+                    <img src="/assets/jd.jpg" alt="Team Member 4" class="team-photo-large" />
+                </div>
+                <div class="team-info">
+                    <div class="team-name">JD</div>
+                    <div class="team-role">Back-end Developer</div>
+                   <section class="skills-section">
+                    <div class="skills-grid-container">
+                        <div class="skill-card">
+                            <div class="skill-icon">
+                                <img src="/assets/icons/html.png" alt="HTML" class="skill-icon-img" />
+                            </div>
+                            <div class="skill-info">
+                                <div class="skill-name">HTML</div>
+                                <div class="skill-level">Advanced</div>
+                            </div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">
+                                <img src="/assets/icons/css-3.png" alt="CSS" class="skill-icon-img" />
+                            </div>
+                            <div class="skill-info">
+                                <div class="skill-name">CSS</div>
+                                <div class="skill-level">Advanced</div>
+                            </div>
+                        </div>
+                        <div class="skill-card">
+                            <div class="skill-icon">
+                                <img src="/assets/icons/js.png" alt="JavaScript" class="skill-icon-img" />
+                            </div>
+                            <div class="skill-info">
+                                <div class="skill-name">JavaScript</div>
+                                <div class="skill-level">Intermediate</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </li>
+            </li>
+        </ul>
+    </section>
+    <script src="/controllers/main.js"></script>
+</body>
+</html>
+
+    <!-- Demo Content -->
+    <div class="demo-content">
+        <h1>CookITHow Recipe Finder</h1>
+        <p class="welcome-message" id="welcomeMessage">Please log in to access all features</p>
+        <p class="scroll-hint">Scroll down to see navbar behavior...</p>
+    </div>
+
+    <script src="/user/user.js"></script>
+</body>
+</html>

@@ -143,7 +143,7 @@ if (passwordInput) {
     });
 }
 
-// Characters celebrate on button clicks
+// Characters celebrate on button clicks - LOGIN BUTTON WITH REDIRECT
 if (loginBtn) {
     loginBtn.addEventListener("click", (e) => {
         e.preventDefault();
@@ -163,7 +163,7 @@ if (loginBtn) {
 
         // Check if user exists and password matches
         if (!user) {
-            alert("User  not found. Please check your email.");
+            alert("User not found. Please check your email.");
             return;
         }
 
@@ -172,46 +172,50 @@ if (loginBtn) {
             return;
         }
 
-        // Successful login
+        // Successful login - ADD REDIRECT HERE
         alert("Login successful!");
-        // Redirect to another page or perform further actions
+        // Replace 'dashboard.html' with your desired destination page
+        window.location.href = 'user.html';
     });
 }
 
-// Sign-up functionality
-document.getElementById('signup-btn').addEventListener('click', function(e) {
-    e.preventDefault();
+// Sign-up functionality - SIGNUP BUTTON WITH REDIRECT
+if (signupBtn) {
+    signupBtn.addEventListener('click', function(e) {
+        e.preventDefault();
 
-    const password = document.getElementById('signup-password-input').value;
-    const confirmPassword = document.getElementById('confirmPassword').value; // Ensure this input exists in your HTML
-    
-    if (password !== confirmPassword) {
-        alert("Passwords don't match!");
-        return;
-    }
+        const password = document.getElementById('signup-password-input').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        
+        if (password !== confirmPassword) {
+            alert("Passwords don't match!");
+            return;
+        }
 
-    const username = document.getElementById('username').value; // Ensure this input exists in your HTML
-    const email = document.getElementById('email').value; // Ensure this input exists in your HTML
-    const fullName = document.getElementById('fullName').value; // Ensure this input exists in your HTML
-    const users = JSON.parse(localStorage.getItem('users')) || [];
+        const username = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+        const fullName = document.getElementById('fullName').value;
+        const users = JSON.parse(localStorage.getItem('users')) || [];
 
-    if (users.some(user => user.username === username)) {
-        alert('Username already exists. Please choose another one.');
-        return;
-    }
+        if (users.some(user => user.username === username)) {
+            alert('Username already exists. Please choose another one.');
+            return;
+        }
 
-    users.push({
-        username,
-        password,
-        email,
-        fullName
+        users.push({
+            username,
+            password,
+            email,
+            fullName
+        });
+
+        localStorage.setItem('users', JSON.stringify(users));
+        
+        alert("Registration successful! You will be redirected to the welcome page.");
+        // Replace 'welcome.html' with your desired destination page
+        window.location.href = 'user.html';
     });
-
-    localStorage.setItem('users', JSON.stringify(users));
-    
-    alert("Registration successful! Please login with your new account.");
-    window.location.href = 'login.html';
-});
+}
 
 window.addEventListener('DOMContentLoaded', () => {
     // Place characters just above the visible bottom of the viewport
@@ -228,7 +232,7 @@ window.addEventListener('DOMContentLoaded', () => {
         bottomContainer.style.height = '140px';
         bottomContainer.style.pointerEvents = 'none';
         bottomContainer.style.zIndex = '1000';
-        bottomContainer.style.bottom = '30px'; // 30px above the bottom edge for visibility
+        bottomContainer.style.bottom = '30px';
         document.body.appendChild(bottomContainer);
     }
 
@@ -243,7 +247,6 @@ window.addEventListener('DOMContentLoaded', () => {
             character.style.width = 'auto';
             character.style.transform = 'translateY(0)';
             character.style.transition = 'none';
-            // Move character to the bottom container
             if (character.parentElement !== bottomContainer) {
                 bottomContainer.appendChild(character);
             }
@@ -279,21 +282,20 @@ window.addEventListener('DOMContentLoaded', () => {
         state.x = state.direction === 1 ? minX : maxX;
 
         let jumpStart = null;
-        let jumpDuration = 600; // ms
+        let jumpDuration = 600;
         let jumpHeight = 60 + idx * 10;
 
         function animate(now) {
             ({ minX, maxX } = getBounds());
 
-            // If peeking, slow down to 0
             if (state.peek) {
                 if (state.speed > 0) {
-                    state.speed -= 6; // Decelerate
+                    state.speed -= 6;
                     if (state.speed < 0) state.speed = 0;
                 }
             } else {
                 if (state.speed < 120 + idx * 20) {
-                    state.speed += 6; // Accelerate back
+                    state.speed += 6;
                     if (state.speed > 120 + idx * 20) state.speed = 120 + idx * 20;
                 }
             }
@@ -312,7 +314,6 @@ window.addEventListener('DOMContentLoaded', () => {
                 character.style.left = state.x + 'px';
             }
 
-            // Handle jump animation
             if (state.jumping) {
                 if (!jumpStart) jumpStart = now;
                 let t = (now - jumpStart) / jumpDuration;
@@ -321,7 +322,6 @@ window.addEventListener('DOMContentLoaded', () => {
                     state.jumping = false;
                     jumpStart = null;
                 }
-                // Simple parabolic jump
                 let y = -jumpHeight * 4 * t * (1 - t);
                 character.style.transform = (state.direction === 1 ? 'scaleX(1)' : 'scaleX(-1)') + ` translateY(${y}px)`;
             } else {
@@ -329,13 +329,10 @@ window.addEventListener('DOMContentLoaded', () => {
                 jumpStart = null;
             }
 
-            // Excited giggle animation (eyes and wiggle)
             if (state.excited) {
-                // Add "excited" class for eyes, and wiggle horizontally
                 character.classList.add('excited');
-                // Wiggle effect (reduced by 75%)
                 state.gigglePhase += 0.25 + 0.05 * idx;
-                const wiggle = Math.sin(state.gigglePhase) * 1.5; // 6 * 0.25 = 1.5
+                const wiggle = Math.sin(state.gigglePhase) * 1.5;
                 character.style.left = (state.x + wiggle) + 'px';
             } else {
                 character.classList.remove('excited');
@@ -353,7 +350,7 @@ window.addEventListener('DOMContentLoaded', () => {
         walkBackAndForth(character, idx);
     });
 
-    // Helper: set all characters to peek
+    // Helper functions
     function setCharactersPeek(peek) {
         characters.forEach((character, idx) => {
             animStates[idx].peek = peek;
@@ -365,7 +362,6 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Helper: set all characters to excited (giggling eyes)
     function setCharactersExcited(excited) {
         characters.forEach((character, idx) => {
             animStates[idx].excited = excited;
@@ -377,7 +373,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Listen for mouseenter/focus on the login form or its children
     if (loginForm) {
-        // Mouse events
         loginForm.addEventListener('mouseenter', () => {
             setCharactersPeek(true);
             setCharactersExcited(true);
@@ -386,7 +381,6 @@ window.addEventListener('DOMContentLoaded', () => {
             setCharactersPeek(false);
             setCharactersExcited(false);
         });
-        // Focus events for any input inside the form
         loginForm.addEventListener('focusin', () => {
             setCharactersPeek(true);
             setCharactersExcited(true);
@@ -396,7 +390,7 @@ window.addEventListener('DOMContentLoaded', () => {
             setCharactersExcited(false);
         });
     }
-    // Also peek/excited if mouse is over any input in the form
+
     const formInputs = loginForm ? loginForm.querySelectorAll('input, button, label') : [];
     formInputs.forEach(input => {
         input.addEventListener('mouseenter', () => {
@@ -417,18 +411,12 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Recalculate bounds on window resize
-    window.addEventListener('resize', () => {
-        // No need to do anything here, bounds are recalculated in animate()
-    });
-
     // Celebrate (jump) when login button is clicked
     const loginBtn = document.getElementById("login-btn");
     if (loginBtn) {
         loginBtn.addEventListener("click", () => {
             characters.forEach((character, idx) => {
                 animStates[idx].jumping = true;
-                // Optional: add happy face
                 character.className = character.className.replace(/\s(happy|peek|surprised)/g, '') + " happy";
                 setTimeout(() => {
                     character.className = character.className.replace(/\s(happy|peek|surprised)/g, '');
