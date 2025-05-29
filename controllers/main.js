@@ -318,9 +318,35 @@
     }
   });
 
-  async function getRecipeDetails(id) {
-    modalContent.innerHTML = '<p class="message loading">Loading details...</p>';
-    showModal();
+const categoryHTML = recipe.strCategory
+    ? `<h3>Category: ${recipe.strCategory}</h3>`
+    : "";
+  const areaHTML = recipe.strArea ? `<h3>Area: ${recipe.strArea}</h3>` : "";
+  const ingredientsHTML = ingredients.length
+    ? `<h3>Ingredients</h3><ul>${ingredients.join("")}</ul>`
+    : "";
+  const instructionsHTML = `<h3>Instructions</h3><p>${
+    recipe.strInstructions
+      ? recipe.strInstructions.replace(/\r?\n/g, "<br>")
+      : "Instructions not available."
+  }</p>`;
+  const youtubeHTML = recipe.strYoutube
+    ? `<h3>Video Recipe</h3><div class="video-wrapper"><a href="${recipe.strYoutube}" target="_blank">Watch on YouTube</a><div>`
+    : "";
+  const sourceHTML = recipe.strSource
+    ? `<div class="source-wrapper"><a href="${recipe.strSource}" target="_blank">View Original Source</a></div>`
+    : "";
+
+  modalContent.innerHTML = `
+    <h2>${recipe.strMeal}</h2>
+    <img src="${recipe.strMealThumb}" alt="${recipe.strMeal}">
+    ${categoryHTML}
+    ${areaHTML}
+    ${ingredientsHTML}
+    ${instructionsHTML}
+    ${youtubeHTML}
+    ${sourceHTML}
+  `;
 
     try {
       const response = await fetch(`${LOOKUP_API_URL}${id}`);
